@@ -7,6 +7,7 @@ import Category from "./modal/Category";
 import University from "./modal/University";
 import HeaderForm from "./HeaderForm";
 import { postFunding } from "@/apis/funding";
+import Link from "next/link";
 
 export default function HeaderNavSection() {
   const [hover, setHover] = useState({
@@ -52,9 +53,9 @@ export default function HeaderNavSection() {
           {univ && <University />}
         </li>
         <li className="text-colorb0b">추천</li>
-        {/* <button onClick={() => postFunding()}> */}
-        <li className=" text-main">펀딩 올리기</li>
-        {/* </button> */}
+        <Link href={"/upload"}>
+          <li className=" text-main">펀딩 올리기</li>
+        </Link>
       </ul>
       <HeaderForm />
     </section>
