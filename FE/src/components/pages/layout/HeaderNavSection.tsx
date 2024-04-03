@@ -53,7 +53,7 @@ export default function HeaderNavSection() {
           {univ && <University />}
         </li>
         <li className="text-colorb0b">추천</li>
-        <Link href={"/upload"}>
+        <Link href={"/new"}>
           <li className=" text-main">펀딩 올리기</li>
         </Link>
       </ul>
