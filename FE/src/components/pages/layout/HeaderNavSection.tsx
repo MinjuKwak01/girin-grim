@@ -6,7 +6,6 @@ import { Layer } from "../../common/icon";
 import Category from "./modal/Category";
 import University from "./modal/University";
 import HeaderForm from "./HeaderForm";
-import { postFunding } from "@/apis/funding";
 import Link from "next/link";
 
 export default function HeaderNavSection() {

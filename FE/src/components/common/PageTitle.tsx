@@ -9,7 +9,7 @@ export default function PageTitle({ title, grey }: Props) {
   return (
     <div
       className={cn(
-        "flex items-centertext-3xl font-bold mt-11 text-color121 ",
+        "flex items-center text-3xl font-bold mt-11 text-color121 ",
         {
           "text-color999": grey,
         }
