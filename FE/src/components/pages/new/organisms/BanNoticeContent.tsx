@@ -1,6 +1,6 @@
 import NoticeBoxField from "../molecules/NoticeBoxField";
 
-export default function BanNotice() {
+export default function BanNoticeContent() {
   const banList = [
     "기존 상품· 콘텐츠의 판매 및 홍보",
     "제3자에 후원금 또는 물품 기부",

@@ -1,5 +1,5 @@
 import PageTitle from "@/components/common/PageTitle";
-import BanNotice from "@/components/pages/new/organisms/BanNotice";
+import BanNotice from "@/components/pages/new/templates/BanNotice";
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";
 
 export default function page({
