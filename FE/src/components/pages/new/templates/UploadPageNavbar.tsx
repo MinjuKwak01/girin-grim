@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn";
 import Link from "next/link";
 
 type UploadNavList = {
@@ -39,7 +40,11 @@ export default function NewPageNavbar({ currentPath }: Props) {
         {uploadNavLists.map(({ title, path }, index) => (
           <li key={`${title}-${path}-${index}`}>
             <Link href={`?page=${path}`}>
-              <p className={currentPath === path ? "text-yellow-400" : ""}>
+              <p
+                className={cn({
+                  "text-main": currentPath === path,
+                })}
+              >
                 {title}
               </p>
             </Link>
