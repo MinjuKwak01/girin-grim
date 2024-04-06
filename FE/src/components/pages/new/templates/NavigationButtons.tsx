@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import NextBtn from "../organisms/NextBtn";
 import PrevBtn from "../organisms/PrevBtn";
-import { UploadParams } from "@/app/new/page";
+import { UploadParams } from "@/Model/Upload";
 
 const uploadParams = ["info", "option", "plan", "content", "creator"];
 

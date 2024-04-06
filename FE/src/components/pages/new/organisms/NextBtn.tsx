@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function NextBtn({ goNext }: Props) {
-  return <StyledBtn text="다음으로" handler={goNext} />;
+  return <StyledBtn text="다음으로" handler={goNext} style="shadow-md" />;
 }
