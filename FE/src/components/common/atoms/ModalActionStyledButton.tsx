@@ -10,7 +10,7 @@ export default function ModalActionStyledButton({
 }: Readonly<Props>) {
   return (
     <button
-      className="w-full py-5 bg-gray-200 rounded-xl border-2 border-neutral-400 text-2xl font-bold"
+      className="py-5 bg-gray-200 rounded-xl border-2 border-neutral-400 text-2xl font-bold"
       onClick={onClick}
     >
       {buttonText}
