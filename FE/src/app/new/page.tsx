@@ -3,19 +3,29 @@ import BanNotice from "@/components/pages/new/templates/BanNotice";
 import NavigationButtons from "@/components/pages/new/templates/NavigationButtons";
 import UploadFundingInfo from "@/components/pages/new/templates/UploadFundingInfo";
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";
+import { redirect } from "next/navigation";
 
 export default function page({
   searchParams,
 }: {
   searchParams: { page: "info" | "option" | "plan" | "content" | "creator" };
 }) {
+  if (!searchParams.page) redirect("/new?page=info");
+
+  const isFirstPage = searchParams.page === "info";
+  const isLastPage = searchParams.page === "creator";
+
   return (
     <section>
       <PageTitle title="펀딩 프로젝트 작성" grey />
       <NewPageNavbar currentPath={searchParams.page} />
-      <BanNotice />
-      <UploadFundingInfo />
-      <NavigationButtons />
+      {searchParams.page === "info" && (
+        <>
+          <BanNotice />
+          <UploadFundingInfo />
+        </>
+      )}
+      <NavigationButtons isFirstPage={isFirstPage} isLastPage={isLastPage} />
     </section>
   );
 }
