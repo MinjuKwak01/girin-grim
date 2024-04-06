@@ -1,17 +1,16 @@
+import { UploadParams } from "@/Model/Upload";
 import PageTitle from "@/components/common/PageTitle";
 import BanNotice from "@/components/pages/new/templates/BanNotice";
 import NavigationButtons from "@/components/pages/new/templates/NavigationButtons";
 import UploadFundingInfo from "@/components/pages/new/templates/UploadFundingInfo";
+import UploadOption from "@/components/pages/new/templates/UploadOption";
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";
 import { redirect } from "next/navigation";
 
-export type UploadParams = "info" | "option" | "plan" | "content" | "creator";
-
-export default function page({
-  searchParams: { page },
-}: {
+type Props = {
   searchParams: { page: UploadParams };
-}) {
+};
+export default function page({ searchParams: { page } }: Props) {
   if (!page) redirect("/new?page=info");
 
   const isFirstPage = page === "info";
@@ -27,6 +26,8 @@ export default function page({
           <UploadFundingInfo />
         </>
       )}
+      {page == "option" && <UploadOption />}
+
       <NavigationButtons
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}

@@ -32,7 +32,7 @@ export default function NavigationButtons({
   };
 
   return (
-    <div className="flex flex-col gap-5 mt-14 max-w-72 mx-auto">
+    <div className="flex flex-col gap-5 my-14 max-w-72 mx-auto">
       {!isLastPage && <NextBtn goNext={() => goNext()} />}
       {!isFirstPage && <PrevBtn goPrev={() => goPrev()} />}
     </div>

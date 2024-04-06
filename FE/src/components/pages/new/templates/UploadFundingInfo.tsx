@@ -1,6 +1,6 @@
 "use client";
 import Title from "../atoms/Title";
-import ModalButtonField from "../organisms/ModalButtonField";
+import ModalButtonField from "../molecules/ModalButtonField";
 
 export default function UploadFundingInfo() {
   return (
