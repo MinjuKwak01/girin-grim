@@ -10,7 +10,7 @@ export default function UploadFundingInfo() {
         type="button"
         headerText="대학 설정"
         contentText="펀딩 정보 입력하기"
-        handler={() => {}}
+        handler={() => {}} //TODO: 모달 열기
       />
       <ModalButtonField
         type="text"
