@@ -5,27 +5,33 @@ import UploadFundingInfo from "@/components/pages/new/templates/UploadFundingInf
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";
 import { redirect } from "next/navigation";
 
-export default function page({
-  searchParams,
-}: {
-  searchParams: { page: "info" | "option" | "plan" | "content" | "creator" };
-}) {
-  if (!searchParams.page) redirect("/new?page=info");
+export type UploadParams = "info" | "option" | "plan" | "content" | "creator";
 
-  const isFirstPage = searchParams.page === "info";
-  const isLastPage = searchParams.page === "creator";
+export default function page({
+  searchParams: { page },
+}: {
+  searchParams: { page: UploadParams };
+}) {
+  if (!page) redirect("/new?page=info");
+
+  const isFirstPage = page === "info";
+  const isLastPage = page === "creator";
 
   return (
     <section>
       <PageTitle title="펀딩 프로젝트 작성" grey />
-      <NewPageNavbar currentPath={searchParams.page} />
-      {searchParams.page === "info" && (
+      <NewPageNavbar currentPath={page} />
+      {page === "info" && (
         <>
           <BanNotice />
           <UploadFundingInfo />
         </>
       )}
-      <NavigationButtons isFirstPage={isFirstPage} isLastPage={isLastPage} />
+      <NavigationButtons
+        isFirstPage={isFirstPage}
+        isLastPage={isLastPage}
+        page={page}
+      />
     </section>
   );
 }

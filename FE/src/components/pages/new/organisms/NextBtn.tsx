@@ -1,5 +1,10 @@
+"use client";
 import StyledBtn from "@/components/common/StyledBtn";
 
-export default function NextBtn() {
-  return <StyledBtn text="다음으로" handler={() => {}} />;
+type Props = {
+  goNext: () => void;
+};
+
+export default function NextBtn({ goNext }: Props) {
+  return <StyledBtn text="다음으로" handler={goNext} />;
 }
