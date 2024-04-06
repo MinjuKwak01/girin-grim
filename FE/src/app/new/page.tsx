@@ -1,5 +1,6 @@
 import PageTitle from "@/components/common/PageTitle";
 import BanNotice from "@/components/pages/new/templates/BanNotice";
+import UploadFundingInfo from "@/components/pages/new/templates/UploadFundingInfo";
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";
 
 export default function page({
@@ -12,6 +13,7 @@ export default function page({
       <PageTitle title="펀딩 프로젝트 작성" grey />
       <NewPageNavbar currentPath={searchParams.page} />
       <BanNotice />
+      <UploadFundingInfo />
     </section>
   );
 }
