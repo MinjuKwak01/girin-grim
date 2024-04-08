@@ -38,4 +38,10 @@ public interface FundingService {
      */
     void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, UserDetailsImpl userDetails);
 
+
+    /*
+     *   공지 조회
+     */
+    FundingRespDtos.NoticeDto  getNotice(Long fundingId);
+
 }
