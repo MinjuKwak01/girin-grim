@@ -330,4 +330,17 @@ public class FundingServiceImpl implements FundingService {
         funding.updateNotice(noticeDto.getNotice());
     }
 
+    @Transactional(readOnly = true)
+    public FundingRespDtos.NoticeDto getNotice(Long fundingId){
+        Funding funding = fundingRepository.findById(fundingId).orElseThrow(
+                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+        );
+
+        //해당 방법은 NoticeDto에 String이 private으로 선언되어있어 불가능
+        //    return new FundingRespDtos.NoticeDto(funding.getNotice());
+        return FundingRespDtos.NoticeDto.builder()
+                .notice(funding.getNotice())
+                .build();
+    }
+
 }
