@@ -322,4 +322,12 @@ public class FundingServiceImpl implements FundingService {
         return new FundingRespDtos.HomeDto(favUniversityList, list);
     }
 
+    @Transactional
+    public void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, UserDetailsImpl userDetails){
+        Funding funding = fundingRepository.findById(fundingId).orElseThrow(
+                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+        );
+        funding.updateNotice(noticeDto.getNotice());
+    }
+
 }
