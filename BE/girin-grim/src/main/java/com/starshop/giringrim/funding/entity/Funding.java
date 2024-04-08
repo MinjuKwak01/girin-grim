@@ -38,6 +38,9 @@ public class Funding extends BaseEntity {
     @Column(nullable = false)
     private String longDescription;
 
+    @Column
+    private String notice;
+
     @Column(nullable = false)
     private BigDecimal currentMoney;
 
@@ -68,11 +71,12 @@ public class Funding extends BaseEntity {
 
 
     @Builder
-    public Funding(String title, String image, String shortDescription, String longDescription, BigDecimal currentMoney, BigDecimal goalMoney, LocalDateTime startTime, LocalDateTime endTime,LocalDateTime estimatedStartTime, FundingType fundingType, University university, Member member) {
+    public Funding(String title, String image, String shortDescription, String longDescription, String notice, BigDecimal currentMoney, BigDecimal goalMoney, LocalDateTime startTime, LocalDateTime endTime,LocalDateTime estimatedStartTime, FundingType fundingType, University university, Member member) {
         this.title = title;
         this.image = image;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
+        this.notice = notice;
         this.currentMoney = currentMoney;
         this.goalMoney = goalMoney;
         this.startTime = startTime;
@@ -112,6 +116,10 @@ public class Funding extends BaseEntity {
         this.endTime = endTime;
         this.estimatedStartTime = estimatedStartTime;
         this.university = university;
+    }
+
+    public void updateNotice(String notice){
+        this.notice = notice;
     }
 }
 
