@@ -33,5 +33,9 @@ public interface FundingService {
      */
     FundingRespDtos.HomeDto home(Integer page, Long universityId, String fundingType, String keyword, String method, UserDetailsImpl userDetails);
 
+    /*
+     *   공지 작성
+     */
+    void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, UserDetailsImpl userDetails);
 
 }
