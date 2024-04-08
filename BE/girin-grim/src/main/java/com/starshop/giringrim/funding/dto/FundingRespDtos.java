@@ -208,4 +208,10 @@ public class FundingRespDtos {
         }
     }
 
+    @Builder
+    @Getter
+    public static class NoticeDto{
+        private String notice;
+    }
+
 }
