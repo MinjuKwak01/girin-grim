@@ -327,6 +327,16 @@ public class FundingServiceImpl implements FundingService {
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
                 () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
         );
+
+        //로그인 사용자 정보 얻어오기
+        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+        );
+
+        //로그인한 사용자와 펀딩 작성자의 정보가 같아야 함
+        if(!member.getId().equals(funding.getMember().getId())){
+            throw new RuntimeException("공지사항 작성 권한이 없습니다");
+        }
         funding.updateNotice(noticeDto.getNotice());
     }
 
