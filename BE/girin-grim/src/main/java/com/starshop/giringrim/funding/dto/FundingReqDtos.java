@@ -16,6 +16,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 @Getter
 public class FundingReqDtos{
+
+    @Getter
+    public static class NoticeDto{
+        String notice;
+    }
+
     @Getter
     public static class UploadDto {
 
