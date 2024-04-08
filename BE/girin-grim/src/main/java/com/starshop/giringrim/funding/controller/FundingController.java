@@ -78,4 +78,13 @@ public class FundingController {
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 
+    /*
+     *   공지사항 조회
+     */
+    @GetMapping("/api/funding/{fundingId}/notice")
+    public ResponseEntity<?> getNotice(@PathVariable Long fundingId){
+        FundingRespDtos.NoticeDto notice = fundingService.getNotice(fundingId);
+        return ApiResponseGenerator.success(notice, HttpStatus.OK);
+    }
+
 }
