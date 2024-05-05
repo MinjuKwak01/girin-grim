@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import Title from "../atoms/Title";
+import Title from "./Title";
 
 type Props = {
   noticeTitle: string;

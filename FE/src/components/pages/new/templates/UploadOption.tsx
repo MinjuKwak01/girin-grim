@@ -1,5 +1,5 @@
 "use client";
-import ModalButtonField from "../molecules/ModalButtonField";
+import ModalButtonField from "../organisms/ModalButtonField";
 
 export default function UploadOption() {
   return (

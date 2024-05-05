@@ -1,7 +1,7 @@
 import { UploadParams } from "@/Model/Upload";
 import PageTitle from "@/components/common/PageTitle";
 import BanNotice from "@/components/pages/new/templates/BanNotice";
-import NavigationButtons from "@/components/pages/new/templates/NavigationButtons";
+import NavigationButtons from "@/components/pages/new/organisms/NavigationButtons";
 import UploadFundingInfo from "@/components/pages/new/templates/UploadFundingInfo";
 import UploadOption from "@/components/pages/new/templates/UploadOption";
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";

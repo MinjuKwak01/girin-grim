@@ -1,4 +1,4 @@
-import CheckBox from "../molecules/CheckBox";
+import CheckBox from "../ui/CheckBox";
 
 export default function BanNoticeCheckBox() {
   const checkLabel =

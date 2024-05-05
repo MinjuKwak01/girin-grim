@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import NextBtn from "../organisms/NextBtn";
-import PrevBtn from "../organisms/PrevBtn";
 import { UploadParams } from "@/Model/Upload";
+import StyledBtn from "@/components/common/StyledBtn";
 
 const uploadParams = ["info", "option", "plan", "content", "creator"];
 
@@ -17,7 +16,7 @@ export default function NavigationButtons({
   isFirstPage,
   isLastPage,
   page,
-}: Props) {
+}: Readonly<Props>) {
   const route = useRouter();
 
   const goNext = () => {
@@ -33,8 +32,12 @@ export default function NavigationButtons({
 
   return (
     <div className="flex flex-col gap-5 my-14 max-w-72 mx-auto">
-      {!isLastPage && <NextBtn goNext={() => goNext()} />}
-      {!isFirstPage && <PrevBtn goPrev={() => goPrev()} />}
+      {!isLastPage && <StyledBtn text="다음으로" handler={goNext} style="shadow-md" />}
+      {!isFirstPage &&<StyledBtn
+      text="이전으로"
+      style="bg-white border border-zinc-400 text-neutral-400 shadow-md"
+      handler={goPrev}
+    />}
     </div>
   );
 }
