@@ -1,10 +1,9 @@
+import { FundingType } from "@/Model/Funding";
 import { atom } from "recoil";
-
-type UploadType = "수령형" | "기부형";
 
 //noticeState
 export const banNoticeAtom = atom({
-  key: "banNoticeAtoms",
+  key: "banNoticeAtom",
   default: false,
 });
 
@@ -19,7 +18,7 @@ export const fundingDetailAtom = atom({
   default: "",
 });
 
-export const fundingCategoryAtom = atom<UploadType>({
+export const fundingCategoryAtom = atom<FundingType>({
   key: "fundingCategoryAtom",
-  default: "수령형",
+  default: "DONATE",
 });

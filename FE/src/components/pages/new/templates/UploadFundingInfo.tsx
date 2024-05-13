@@ -6,6 +6,7 @@ import TextareaField from "../organisms/TextareaField";
 import OptionsField from "../organisms/OptionsField";
 import { FundingInfoState } from "@/store/UploadState/UploadState";
 import { useRecoilState } from "recoil";
+import { FundingType } from "@/Model/Funding";
 
 export default function UploadFundingInfo() {
   const [fundingInfo, setFundingInfo] = useRecoilState(FundingInfoState);
@@ -39,7 +40,13 @@ export default function UploadFundingInfo() {
         contentText="이미지 업로드"
         handler={() => {}}
       />
-      <OptionsField headerText="펀딩 종류" />
+      <OptionsField
+        headerText="펀딩 종류"
+        setValue={(value: FundingType) =>
+          setFundingInfo((prev) => ({ ...prev, fundingCategory: value }))
+        }
+        value={fundingCategory}
+      />
     </>
   );
 }

@@ -6,9 +6,11 @@ export type FundingDetail = {
   options: FundingOptions[];
 };
 
+export type FundingType = "DONATE" | "GIFT";
+
 export type Funding = {
   fundingId: number;
-  type: "DONATE" | "GIFT";
+  type: FundingType;
   title: string;
   image: string;
   university: string;
@@ -71,5 +73,5 @@ export type BackedFunding = {
 export type FundingInfo = {
   fundingTitle: string;
   fundingDetail: string;
-  fundingCategory: "수령형" | "기부형";
+  fundingCategory: FundingType;
 };
