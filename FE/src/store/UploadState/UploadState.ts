@@ -5,6 +5,7 @@ import {
   fundingDetailAtom,
   fundingTitleAtom,
 } from "./UploadAtoms";
+import { FundingInfo } from "@/Model/Funding";
 
 //export State
 export const NoticeState = selector({
@@ -24,5 +25,12 @@ export const FundingInfoState = selector({
     const fundingCategory = get(fundingCategoryAtom);
     return { fundingTitle, fundingDetail, fundingCategory };
   },
-  set: ({ set }) => set(banNoticeAtom, true),
+  set: ({ set }, newValue) => {
+    const { fundingTitle, fundingDetail, fundingCategory } =
+      newValue as FundingInfo;
+
+    set(fundingTitleAtom, fundingTitle);
+    set(fundingDetailAtom, fundingDetail);
+    set(fundingCategoryAtom, fundingCategory);
+  },
 });

@@ -67,3 +67,9 @@ export type BackedFunding = {
   university: string;
   dueDate: number;
 };
+
+export type FundingInfo = {
+  fundingTitle: string;
+  fundingDetail: string;
+  fundingCategory: "수령형" | "기부형";
+};

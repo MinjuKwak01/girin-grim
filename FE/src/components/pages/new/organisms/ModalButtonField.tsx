@@ -16,7 +16,7 @@ export default function ModalButtonField({
   style,
 }: Readonly<Props>) {
   const buttonStyle = "text-color9f9 underline underline-offset-4 " + style;
-  console.log(buttonStyle);
+
   return (
     <div className="grid grid-cols-[1fr_6fr] mt-10">
       <FieldHeader headerText={headerText} />
