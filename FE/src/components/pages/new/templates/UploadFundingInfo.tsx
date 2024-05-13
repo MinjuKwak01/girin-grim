@@ -29,6 +29,10 @@ export default function UploadFundingInfo() {
       <TextareaField
         headerText="펀딩 설명"
         contentText="펀딩을 소개하는 설명을 입력해주세요."
+        state={fundingDetail}
+        changehanler={(input) =>
+          setFundingInfo((prev) => ({ ...prev, fundingDetail: input }))
+        }
       />
       <ModalButtonField
         headerText="대표 이미지"
