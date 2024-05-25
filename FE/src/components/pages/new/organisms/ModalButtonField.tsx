@@ -18,7 +18,7 @@ export default function ModalButtonField({
   const buttonStyle = "text-color9f9 underline underline-offset-4 " + style;
 
   return (
-    <div className="grid grid-cols-[1fr_6fr] mt-10">
+    <div className="grid grid-cols-[1fr_8fr]">
       <FieldHeader headerText={headerText} />
       <ModalActionStyledButton
         style={buttonStyle}

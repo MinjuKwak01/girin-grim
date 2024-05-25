@@ -24,8 +24,8 @@ export default function OptionsField({
   value,
 }: Readonly<Props>) {
   return (
-    <div className="grid grid-cols-[1fr_6fr] mt-10">
-      <FieldHeader headerText={headerText} />
+    <div className="grid grid-cols-[1fr_8fr]">
+      <FieldHeader headerText={headerText} style="mt-2" />
       <div>
         <select
           className="text-xl pl-8 pr-20 py-3  rounded-xl border-2 border-neutral-400 outline-none text-color9f9"

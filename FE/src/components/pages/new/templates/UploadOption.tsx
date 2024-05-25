@@ -1,18 +1,16 @@
 "use client";
-import ModalButtonField from "../organisms/ModalButtonField";
+import { useRecoilValue } from "recoil";
+import { FundingInfoState } from "@/store/UploadState/UploadStates";
+import DonateOptions from "../organisms/DonateOptions";
+import GiftOptions from "../organisms/GiftOptions";
 
 export default function UploadOption() {
-  const headerText = "옵션 설정";
-  const contentText =
-    "기부형은 1000크레파스 단위로 기부가 가능하며 별도의 옵션 설정이 불가능합니다.";
-  const style = "text-colorc32";
-  const handler = () => {};
+  const { fundingCategory } = useRecoilValue(FundingInfoState);
 
-  const modalButtonFieldProps = {
-    headerText,
-    contentText,
-    handler,
-    style,
-  };
-  return <ModalButtonField {...modalButtonFieldProps} />;
+  return (
+    <>
+      {fundingCategory === "DONATE" && <DonateOptions />}
+      {fundingCategory === "GIFT" && <GiftOptions />}
+    </>
+  );
 }
