@@ -20,5 +20,5 @@ export const fundingDetailAtom = atom({
 
 export const fundingCategoryAtom = atom<FundingType>({
   key: "fundingCategoryAtom",
-  default: "DONATE",
+  default: "GIFT",
 });

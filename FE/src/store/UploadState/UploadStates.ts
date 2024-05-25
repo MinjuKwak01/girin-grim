@@ -9,16 +9,16 @@ import { FundingInfo } from "@/Model/Funding";
 
 //export State
 export const NoticeState = selector({
-  key: "NoticeState",
+  key: "NoticeStateSelector",
   get: ({ get }) => {
     const banNotice = get(banNoticeAtom);
     return { banNotice };
   },
-  set: ({ set }) => set(banNoticeAtom, true),
+  set: ({ set }) => set(banNoticeAtom, (prev) => !prev),
 });
 
 export const FundingInfoState = selector({
-  key: "FundingInfoState",
+  key: "FundingInfoStateSelector",
   get: ({ get }) => {
     const fundingTitle = get(fundingTitleAtom);
     const fundingDetail = get(fundingDetailAtom);
