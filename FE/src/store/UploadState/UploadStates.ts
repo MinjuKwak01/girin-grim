@@ -4,8 +4,13 @@ import {
   fundingCategoryAtom,
   fundingDetailAtom,
   fundingTitleAtom,
+  fundintOptionIsPickupAtom,
+  fundintOptionItemsAtom,
+  fundintOptionNameAtom,
+  fundintOptionPriceAtom,
+  fundintOptionQuantityAtom,
 } from "./UploadAtoms";
-import { FundingInfo } from "@/Model/Funding";
+import { FundingInfo, FundingOptions } from "@/Model/Funding";
 
 //export State
 
@@ -41,5 +46,34 @@ export const FundingInfoState = selector({
     set(fundingTitleAtom, fundingTitle);
     set(fundingDetailAtom, fundingDetail);
     set(fundingCategoryAtom, fundingCategory);
+  },
+});
+
+export const FundingOptionState = selector<FundingOptions>({
+  key: "FundingOptionStateSelector",
+  get: ({ get }) => {
+    const name = get(fundintOptionNameAtom);
+    const price = get(fundintOptionPriceAtom);
+    const quantity = get(fundintOptionQuantityAtom);
+    const isPickup = get(fundintOptionIsPickupAtom);
+    const items = get(fundintOptionItemsAtom);
+
+    return {
+      name,
+      price,
+      quantity,
+      isPickup,
+      items,
+    };
+  },
+  set: ({ set }, newValue) => {
+    const { isPickup, items, name, price, quantity } =
+      newValue as FundingOptions;
+
+    set(fundintOptionNameAtom, name);
+    set(fundintOptionPriceAtom, price);
+    set(fundintOptionQuantityAtom, quantity);
+    set(fundintOptionIsPickupAtom, isPickup);
+    set(fundintOptionItemsAtom, items);
   },
 });

@@ -32,10 +32,12 @@ export type FundingOptions = {
   price: number;
   quantity: number;
   isPickup: boolean;
-  items: {
-    itemId: number;
-    name: string;
-  }[];
+  items: FundingItem[];
+};
+
+export type FundingItem = {
+  itemId: number;
+  name: string;
 };
 
 /**기존 funding의 option에 amount값 추가된 타입 */

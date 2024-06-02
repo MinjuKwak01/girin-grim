@@ -5,6 +5,7 @@ import GiftOptiondDetail from "../organisms/GiftOptiondDetail";
 
 const GiftOptionField = () => {
   const [isToggleOn, setIsToggleOn] = useState(false);
+  //옵션 이름, [구성품], 가격, 수량
 
   return (
     <div className="grid grid-cols-[1fr_6fr] mt-10 gap-x-8">
