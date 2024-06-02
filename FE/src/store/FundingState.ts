@@ -1,7 +1,7 @@
-import { FundingOptions, SelectedOption } from "@/Model/Funding";
+import { FundingOptionsWithId, SelectedOption } from "@/Model/Funding";
 import { atom, selector } from "recoil";
 
-export const FundingOptionsState = atom<FundingOptions[]>({
+export const FundingOptionsState = atom<FundingOptionsWithId[]>({
   key: "FundingOptionsState",
   default: [],
 });
@@ -17,7 +17,7 @@ export const TotalCostState = selector({
     const options = get(SelectedOptions);
     const totalCost = options.reduce(
       (acc, cur) => acc + cur.amount * cur.price,
-      0
+      0,
     );
     return totalCost;
   },

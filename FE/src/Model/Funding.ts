@@ -3,7 +3,7 @@ export type FundingDetail = {
   coin: number;
   member: FundingMember;
   funding: Funding;
-  options: FundingOptions[];
+  options: FundingOptionsWithId[];
 };
 
 export type FundingType = "DONATE" | "GIFT";
@@ -23,8 +23,11 @@ export type Funding = {
   goalMoney: number;
 };
 
-export type FundingOptions = {
+export type FundingOptionsWithId = {
   optionId: number;
+} & FundingOptions;
+
+export type FundingOptions = {
   name: string;
   price: number;
   quantity: number;
@@ -36,7 +39,7 @@ export type FundingOptions = {
 };
 
 /**기존 funding의 option에 amount값 추가된 타입 */
-export type SelectedOption = FundingOptions & { amount: number };
+export type SelectedOption = FundingOptionsWithId & { amount: number };
 
 export type Pledge = {
   member: FundingMember;

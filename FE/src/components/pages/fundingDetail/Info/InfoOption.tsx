@@ -1,5 +1,5 @@
 "use client";
-import { FundingOptions, SelectedOption } from "@/Model/Funding";
+import { FundingOptionsWithId, SelectedOption } from "@/Model/Funding";
 import InfoOptionDetail from "./InfoOptionDetail";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -7,7 +7,7 @@ import { SelectedOptions, TotalDonateState } from "@/store/FundingState";
 import { updateLocalOption } from "@/utils/localData";
 
 type Props = {
-  options: FundingOptions[];
+  options: FundingOptionsWithId[];
 };
 
 export default function InfoOption({ options }: Readonly<Props>) {
@@ -34,7 +34,7 @@ export default function InfoOption({ options }: Readonly<Props>) {
           if (
             selectedOption &&
             !selected.find(
-              ({ optionId }) => optionId === selectedOption.optionId
+              ({ optionId }) => optionId === selectedOption.optionId,
             )
           ) {
             setSelected([...selected, selectedOption]);
@@ -68,14 +68,16 @@ export default function InfoOption({ options }: Readonly<Props>) {
             deleteOption={() => {
               setClicked(undefined);
               setSelected(
-                selected.filter((item) => item.optionId !== option.optionId)
+                selected.filter((item) => item.optionId !== option.optionId),
               );
             }}
             setAmount={(amount: number) => {
               setSelected(
                 selected.map((item) =>
-                  item.optionId === option.optionId ? { ...item, amount } : item
-                )
+                  item.optionId === option.optionId
+                    ? { ...item, amount }
+                    : item,
+                ),
               );
             }}
           />

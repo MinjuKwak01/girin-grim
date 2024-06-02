@@ -8,6 +8,11 @@ import {
 import { FundingInfo } from "@/Model/Funding";
 
 //export State
+
+/**
+ * 공지사항 상태를 관리하는 selector
+ * banNotice를 관리한다. (첫 페이지)
+ */
 export const NoticeState = selector({
   key: "NoticeStateSelector",
   get: ({ get }) => {
@@ -17,6 +22,10 @@ export const NoticeState = selector({
   set: ({ set }) => set(banNoticeAtom, (prev) => !prev),
 });
 
+/**
+ * 펀딩 정보 상태를 관리하는 selector
+ * title, detail, category를 관리한다. (첫 페이지)
+ */
 export const FundingInfoState = selector({
   key: "FundingInfoStateSelector",
   get: ({ get }) => {
