@@ -26,6 +26,8 @@ const config: Config = {
         colorede: "#ededed",
         colord9d: "#d9d9d9",
         colore7e: "#e7e7e7",
+
+        colorc32: "#C32A3C",
       },
       fontFamily: {
         nanum: "'NanumSquare_Neo-Regular',Helvetica",

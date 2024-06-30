@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/utils/cn";
+
 type Props = {
   text: string;
   handler?: () => void;
@@ -16,9 +18,14 @@ export default function StyledBtn({
   return (
     <button
       disabled={disable}
-      className={`w-full h-[4.375rem] bg-main text-white font-nanum text-2xl tracking-[1.3px] rounded-[8px] overflow-hidden ${style} ${
-        disable ? "cursor-default" : "cursor-pointer"
-      }"}`}
+      className={cn(
+        `w-full h-[4.375rem] bg-main text-white font-nanum text-2xl tracking-[1.3px] rounded-[8px] overflow-hidden`,
+        {
+          [style!]: style,
+          "cursor-default": disable,
+          "cursor-pointer": !disable,
+        }
+      )}
       style={{ opacity: disable ? 0.5 : 1 }}
       onClick={() => handler && handler()}
     >
