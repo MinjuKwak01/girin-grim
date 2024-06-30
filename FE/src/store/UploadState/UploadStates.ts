@@ -3,6 +3,7 @@ import {
   banNoticeAtom,
   fundingCategoryAtom,
   fundingDetailAtom,
+  FundingOptionsAtom,
   fundingTitleAtom,
   fundintOptionIsPickupAtom,
   fundintOptionItemsAtom,
@@ -10,7 +11,7 @@ import {
   fundintOptionPriceAtom,
   fundintOptionQuantityAtom,
 } from "./UploadAtoms";
-import { FundingInfo, FundingOptions } from "@/Model/Funding";
+import { FundingInfo, FundingOption } from "@/Model/Funding";
 
 //export State
 
@@ -49,7 +50,12 @@ export const FundingInfoState = selector({
   },
 });
 
-export const FundingOptionState = selector<FundingOptions>({
+/**
+ * 업로드 페이지의 펀딩 옵션 상태를 관리하는 selector
+ * name, price, quantity, isPickup, items를 관리한다. (두 번째 페이지)
+ */
+
+const FundingOptionState = selector({
   key: "FundingOptionStateSelector",
   get: ({ get }) => {
     const name = get(fundintOptionNameAtom);
@@ -68,12 +74,23 @@ export const FundingOptionState = selector<FundingOptions>({
   },
   set: ({ set }, newValue) => {
     const { isPickup, items, name, price, quantity } =
-      newValue as FundingOptions;
+      newValue as FundingOption;
 
     set(fundintOptionNameAtom, name);
     set(fundintOptionPriceAtom, price);
     set(fundintOptionQuantityAtom, quantity);
     set(fundintOptionIsPickupAtom, isPickup);
     set(fundintOptionItemsAtom, items);
+  },
+});
+
+export const FundingOptionsState = selector<FundingOption[]>({
+  key: "FundingOptionsStateSelector",
+  get: ({ get }) => {
+    const options = get(FundingOptionState);
+    return [options];
+  },
+  set: ({ set }, newValue) => {
+    set(FundingOptionsAtom, newValue);
   },
 });

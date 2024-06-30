@@ -1,4 +1,4 @@
-import { FundingItem, FundingType } from "@/Model/Funding";
+import { FundingItem, FundingOption, FundingType } from "@/Model/Funding";
 import { atom } from "recoil";
 
 //noticeState
@@ -44,7 +44,12 @@ export const fundintOptionIsPickupAtom = atom({
   default: false,
 });
 
-export const fundintOptionItemsAtom = atom<FundingItem[]>({
+export const fundintOptionItemsAtom = atom<Omit<FundingItem, "itemId">[]>({
   key: "fundintOptionItemsAtom",
+  default: [],
+});
+
+export const FundingOptionsAtom = atom<FundingOption[]>({
+  key: "FundingOptionsAtom",
   default: [],
 });

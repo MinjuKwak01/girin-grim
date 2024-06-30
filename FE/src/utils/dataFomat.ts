@@ -1,6 +1,6 @@
 import {
   BackedFunding,
-  FundingOptionsWithId,
+  FundingOptionWithId,
   PledgeFunding,
   SelectedOption,
 } from "@/Model/Funding";
@@ -13,7 +13,7 @@ export const formatSuppotData = (address: string) => {
 };
 
 export const formatOptionData = (
-  options: FundingOptionsWithId[],
+  options: FundingOptionWithId[],
 ): SelectedOption[] => {
   const optionData: SelectedOption[] = options.map((option) => {
     const { items, name, optionId, price, quantity, isPickup } = option;

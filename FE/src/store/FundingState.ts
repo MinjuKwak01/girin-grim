@@ -1,7 +1,7 @@
-import { FundingOptionsWithId, SelectedOption } from "@/Model/Funding";
+import { FundingOptionWithId, SelectedOption } from "@/Model/Funding";
 import { atom, selector } from "recoil";
 
-export const FundingOptionsState = atom<FundingOptionsWithId[]>({
+export const FundingOptionsState = atom<FundingOptionWithId[]>({
   key: "FundingOptionsState",
   default: [],
 });

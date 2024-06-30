@@ -1,9 +1,9 @@
-import { BackedFunding, FundingMember, FundingOptionsWithId } from "./Funding";
+import { BackedFunding, FundingMember, FundingOptionWithId } from "./Funding";
 
 export type Backed = {
   member: FundingMember;
   funding: BackedFunding;
-  options: FundingOptionsWithId[];
+  options: FundingOptionWithId[];
 } & {
   totalPrice: number;
   address: string;

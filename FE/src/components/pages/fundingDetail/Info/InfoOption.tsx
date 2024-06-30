@@ -1,5 +1,5 @@
 "use client";
-import { FundingOptionsWithId, SelectedOption } from "@/Model/Funding";
+import { FundingOptionWithId, SelectedOption } from "@/Model/Funding";
 import InfoOptionDetail from "./InfoOptionDetail";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -7,7 +7,7 @@ import { SelectedOptions, TotalDonateState } from "@/store/FundingState";
 import { updateLocalOption } from "@/utils/localData";
 
 type Props = {
-  options: FundingOptionsWithId[];
+  options: FundingOptionWithId[];
 };
 
 export default function InfoOption({ options }: Readonly<Props>) {

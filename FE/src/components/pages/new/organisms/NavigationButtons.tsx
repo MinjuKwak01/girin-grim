@@ -20,24 +20,28 @@ export default function NavigationButtons({
   const route = useRouter();
 
   const goNext = () => {
-    if (isLastPage) return route.replace("/new/complete");
+    if (isLastPage) return route.push("/new/complete");
     const nextPageIndex = uploadParams.indexOf(page) + 1;
     route.replace(`/new?page=${uploadParams[nextPageIndex]}`);
   };
   const goPrev = () => {
     if (isFirstPage) return;
     const nextPageIndex = uploadParams.indexOf(page) - 1;
-    route.replace(`/new?page=${uploadParams[nextPageIndex]}`);
+    route.push(`/new?page=${uploadParams[nextPageIndex]}`);
   };
 
   return (
     <div className="flex flex-col gap-5 my-14 max-w-72 mx-auto">
-      {!isLastPage && <StyledBtn text="다음으로" handler={goNext} style="shadow-md" />}
-      {!isFirstPage &&<StyledBtn
-      text="이전으로"
-      style="bg-white border border-zinc-400 text-neutral-400 shadow-md"
-      handler={goPrev}
-    />}
+      {!isLastPage && (
+        <StyledBtn text="다음으로" handler={goNext} style="shadow-md" />
+      )}
+      {!isFirstPage && (
+        <StyledBtn
+          text="이전으로"
+          style="bg-white border border-zinc-400 text-neutral-400 shadow-md"
+          handler={goPrev}
+        />
+      )}
     </div>
   );
 }
