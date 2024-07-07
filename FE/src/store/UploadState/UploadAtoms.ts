@@ -49,6 +49,11 @@ export const fundintOptionItemsAtom = atom<Omit<FundingItem, "itemId">[]>({
   default: [],
 });
 
+export const fundingOptionPickupInfo = atom({
+  key: "fundintOptionIsPickupAtom",
+  default: "",
+});
+
 export const FundingOptionsAtom = atom<FundingOption[]>({
   key: "FundingOptionsAtom",
   default: [],

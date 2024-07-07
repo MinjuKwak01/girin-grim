@@ -11,6 +11,7 @@ type Props = {
   changeItems: (items: { name: string }[]) => void;
   changePrice: (price: number) => void;
   changeQuantity: (quantity: number) => void;
+  changePickupInfo: (pickupInfo: string) => void;
 };
 
 const GiftOptiondDetail = ({
@@ -19,6 +20,7 @@ const GiftOptiondDetail = ({
   changeItems,
   changePrice,
   changeQuantity,
+  changePickupInfo,
 }: Props) => {
   const [isNoLimit, setIsNoLimit] = useState(false);
 
@@ -51,8 +53,8 @@ const GiftOptiondDetail = ({
         {option.isPickup && (
           <InputField
             contentText="현장 수령 장소 및 시간을 입력해주세요."
-            changehandler={(input) => {}}
-            state=""
+            changehandler={(input) => changePickupInfo(input as string)}
+            state={option.pickupInfo}
             layout="gap-6"
           />
         )}

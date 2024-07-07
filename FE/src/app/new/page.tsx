@@ -6,6 +6,7 @@ import UploadFundingInfo from "@/components/pages/new/templates/UploadFundingInf
 import UploadOption from "@/components/pages/new/templates/UploadOption";
 import NewPageNavbar from "@/components/pages/new/templates/UploadPageNavbar";
 import { redirect } from "next/navigation";
+import UploadPlan from "@/components/pages/new/templates/UploadPlan";
 
 type Props = {
   searchParams: { page: UploadParams };
@@ -27,6 +28,7 @@ export default function page({ searchParams: { page } }: Props) {
         </>
       )}
       {page == "option" && <UploadOption />}
+      {page == "plan" && <UploadPlan />}
 
       <NavigationButtons
         isFirstPage={isFirstPage}

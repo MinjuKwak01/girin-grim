@@ -6,13 +6,17 @@ import { FundingOption } from "@/Model/Funding";
 import { FundingOptionsState } from "@/store/UploadState/UploadStates";
 import { useSetRecoilState } from "recoil";
 
-const defaultOptions: FundingOption & { isSelected: boolean } = {
+const defaultOptions: FundingOption & {
+  isSelected: boolean;
+  pickupInfo: string;
+} = {
   name: "",
   price: 0,
   isPickup: false,
   items: [],
   quantity: 0,
   isSelected: false,
+  pickupInfo: "",
 };
 
 const GiftOptions = () => {
@@ -23,6 +27,10 @@ const GiftOptions = () => {
   ]);
   const setGlobalOption = useSetRecoilState(FundingOptionsState);
 
+  /**
+   * 선택된 옵션만 필터링하여 전역 옵션 데이터(전역 객체)으로 저장
+   * 이는 useEffect를 통해 option값이 바뀔 때마다 전역 상태로 저장됨
+   */
   const newGlobalOptions = useMemo(
     () =>
       options
@@ -86,6 +94,14 @@ const GiftOptions = () => {
     });
   }, []);
 
+  const changePickupInfo = useCallback((index: number, pickupInfo: string) => {
+    setOptions((prev) => {
+      const newOptions = [...prev];
+      newOptions[index].pickupInfo = pickupInfo;
+      return newOptions;
+    });
+  }, []);
+
   return (
     <>
       <Title headerTitle="옵션 설정" />
@@ -99,6 +115,7 @@ const GiftOptions = () => {
           changeIsPickup={(data) => changeIsPickup(index, data)}
           changeItems={(data) => changeItems(index, data)}
           changeQuantity={(data) => changeQuantity(index, data)}
+          changePickupInfo={(data) => changePickupInfo(index, data)}
         />
       ))}
     </>

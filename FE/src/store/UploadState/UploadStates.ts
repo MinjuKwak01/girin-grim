@@ -3,6 +3,7 @@ import {
   banNoticeAtom,
   fundingCategoryAtom,
   fundingDetailAtom,
+  fundingOptionPickupInfo,
   FundingOptionsAtom,
   fundingTitleAtom,
   fundintOptionIsPickupAtom,
@@ -63,6 +64,7 @@ const FundingOptionState = selector({
     const quantity = get(fundintOptionQuantityAtom);
     const isPickup = get(fundintOptionIsPickupAtom);
     const items = get(fundintOptionItemsAtom);
+    const pickupInfo = get(fundingOptionPickupInfo);
 
     return {
       name,
@@ -70,10 +72,11 @@ const FundingOptionState = selector({
       quantity,
       isPickup,
       items,
+      pickupInfo,
     };
   },
   set: ({ set }, newValue) => {
-    const { isPickup, items, name, price, quantity } =
+    const { isPickup, items, name, price, quantity, pickupInfo } =
       newValue as FundingOption;
 
     set(fundintOptionNameAtom, name);
@@ -81,9 +84,16 @@ const FundingOptionState = selector({
     set(fundintOptionQuantityAtom, quantity);
     set(fundintOptionIsPickupAtom, isPickup);
     set(fundintOptionItemsAtom, items);
+    set(fundingOptionPickupInfo, pickupInfo);
   },
 });
 
+/**
+ * 선택된 펀딩 옵션들의 상태를 관리하는 selector
+ * FundingOption의 경우 현장수령 정보에 맞는 pickupInfo를 추가로 관리한다.
+ *
+ * 이는 서버 요청시 변환과정이 필요하다.
+ */
 export const FundingOptionsState = selector<FundingOption[]>({
   key: "FundingOptionsStateSelector",
   get: ({ get }) => {

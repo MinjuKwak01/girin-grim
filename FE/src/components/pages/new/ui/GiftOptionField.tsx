@@ -19,6 +19,7 @@ type Props = {
     }[],
   ) => void;
   changeQuantity: (item: number) => void;
+  changePickupInfo: (item: string) => void;
 };
 
 const GiftOptionField = ({
@@ -29,6 +30,7 @@ const GiftOptionField = ({
   changeName,
   changePrice,
   changeQuantity,
+  changePickupInfo,
 }: Props) => {
   const [isToggleOn, setIsToggleOn] = useState(false);
   const { isSelected } = option;
@@ -70,6 +72,7 @@ const GiftOptionField = ({
           changeItems={changeItems}
           changePrice={changePrice}
           changeQuantity={changeQuantity}
+          changePickupInfo={changePickupInfo}
         />
       )}
     </div>
