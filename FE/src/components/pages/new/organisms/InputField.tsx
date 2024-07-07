@@ -4,12 +4,13 @@ import FieldHeader from "../ui/FieldHeader";
 type Props = {
   headerText?: string;
   contentText: string;
-  changehandler: (input: string | number) => void;
+  changehandler: (input: string) => void;
   state: string;
   layout?: string;
   type?: "text" | "number";
   children?: React.ReactNode;
   disabled?: boolean;
+  notice?: string;
 };
 
 export default function InputField({
@@ -20,6 +21,7 @@ export default function InputField({
   layout,
   disabled,
   type = "text",
+  notice,
 }: Readonly<Props>) {
   layout = layout || "";
   return (
@@ -29,7 +31,7 @@ export default function InputField({
       })}
     >
       {headerText ? <FieldHeader headerText={headerText} /> : <div />}
-      <div>
+      <div className="w-full">
         <input
           className="text-2xl px-8 py-5 rounded-xl border-2 border-neutral-400 outline-none w-full"
           placeholder={contentText}
@@ -38,6 +40,9 @@ export default function InputField({
           type={type}
           disabled={disabled}
         />
+        {notice && (
+          <div className="bg-colorede py-8 mt-5 rounded-xl pl-6">{notice}</div>
+        )}
       </div>
     </div>
   );
