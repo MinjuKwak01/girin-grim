@@ -23,34 +23,33 @@ export const fundingCategoryAtom = atom<FundingType>({
   default: "GIFT",
 });
 
-// optionState
-export const fundintOptionNameAtom = atom({
-  key: "fundintOptionNameAtom",
+export const fundingOptionNameAtom = atom({
+  key: "fundingOptionNameAtom",
   default: "",
 });
 
-export const fundintOptionPriceAtom = atom({
-  key: "fundintOptionPriceAtom",
+export const fundingOptionPriceAtom = atom({
+  key: "fundingOptionPriceAtom",
   default: 0,
 });
 
-export const fundintOptionQuantityAtom = atom({
-  key: "fundintOptionQuantityAtom",
+export const fundingOptionQuantityAtom = atom({
+  key: "fundingOptionQuantityAtom",
   default: 0,
 });
 
-export const fundintOptionIsPickupAtom = atom({
-  key: "fundintOptionIsPickupAtom",
+export const fundingOptionIsPickupAtom = atom({
+  key: "fundingOptionIsPickupAtom",
   default: false,
 });
 
-export const fundintOptionItemsAtom = atom<Omit<FundingItem, "itemId">[]>({
-  key: "fundintOptionItemsAtom",
+export const fundingOptionItemsAtom = atom<Omit<FundingItem, "itemId">[]>({
+  key: "fundingOptionItemsAtom",
   default: [],
 });
 
-export const fundingOptionPickupInfo = atom({
-  key: "fundintOptionIsPickupAtom",
+export const fundingOptionPickupInfoAtom = atom({
+  key: "fundingOptionPickupInfoAtom",
   default: "",
 });
 

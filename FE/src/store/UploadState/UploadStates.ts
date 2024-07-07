@@ -3,14 +3,14 @@ import {
   banNoticeAtom,
   fundingCategoryAtom,
   fundingDetailAtom,
-  fundingOptionPickupInfo,
+  fundingOptionIsPickupAtom,
+  fundingOptionItemsAtom,
+  fundingOptionNameAtom,
+  fundingOptionPickupInfoAtom,
+  fundingOptionPriceAtom,
+  fundingOptionQuantityAtom,
   FundingOptionsAtom,
   fundingTitleAtom,
-  fundintOptionIsPickupAtom,
-  fundintOptionItemsAtom,
-  fundintOptionNameAtom,
-  fundintOptionPriceAtom,
-  fundintOptionQuantityAtom,
 } from "./UploadAtoms";
 import { FundingInfo, FundingOption } from "@/Model/Funding";
 
@@ -58,36 +58,25 @@ export const FundingInfoState = selector({
 
 const FundingOptionState = selector({
   key: "FundingOptionStateSelector",
-  get: ({ get }) => {
-    const name = get(fundintOptionNameAtom);
-    const price = get(fundintOptionPriceAtom);
-    const quantity = get(fundintOptionQuantityAtom);
-    const isPickup = get(fundintOptionIsPickupAtom);
-    const items = get(fundintOptionItemsAtom);
-    const pickupInfo = get(fundingOptionPickupInfo);
-
-    return {
-      name,
-      price,
-      quantity,
-      isPickup,
-      items,
-      pickupInfo,
-    };
-  },
+  get: ({ get }) => ({
+    name: get(fundingOptionNameAtom),
+    price: get(fundingOptionPriceAtom),
+    quantity: get(fundingOptionQuantityAtom),
+    isPickup: get(fundingOptionIsPickupAtom),
+    items: get(fundingOptionItemsAtom),
+    pickupInfo: get(fundingOptionPickupInfoAtom),
+  }),
   set: ({ set }, newValue) => {
-    const { isPickup, items, name, price, quantity, pickupInfo } =
+    const { name, price, quantity, isPickup, items, pickupInfo } =
       newValue as FundingOption;
-
-    set(fundintOptionNameAtom, name);
-    set(fundintOptionPriceAtom, price);
-    set(fundintOptionQuantityAtom, quantity);
-    set(fundintOptionIsPickupAtom, isPickup);
-    set(fundintOptionItemsAtom, items);
-    set(fundingOptionPickupInfo, pickupInfo);
+    set(fundingOptionNameAtom, name);
+    set(fundingOptionPriceAtom, price);
+    set(fundingOptionQuantityAtom, quantity);
+    set(fundingOptionIsPickupAtom, isPickup);
+    set(fundingOptionItemsAtom, items);
+    set(fundingOptionPickupInfoAtom, pickupInfo);
   },
 });
-
 /**
  * 선택된 펀딩 옵션들의 상태를 관리하는 selector
  * FundingOption의 경우 현장수령 정보에 맞는 pickupInfo를 추가로 관리한다.
@@ -96,11 +85,6 @@ const FundingOptionState = selector({
  */
 export const FundingOptionsState = selector<FundingOption[]>({
   key: "FundingOptionsStateSelector",
-  get: ({ get }) => {
-    const options = get(FundingOptionState);
-    return [options];
-  },
-  set: ({ set }, newValue) => {
-    set(FundingOptionsAtom, newValue);
-  },
+  get: ({ get }) => get(FundingOptionsAtom),
+  set: ({ set }, newValue) => set(FundingOptionsAtom, newValue),
 });
