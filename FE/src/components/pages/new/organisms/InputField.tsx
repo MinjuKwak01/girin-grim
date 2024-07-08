@@ -41,7 +41,9 @@ export default function InputField({
           disabled={disabled}
         />
         {notice && (
-          <div className="bg-colorede py-8 mt-5 rounded-xl pl-6">{notice}</div>
+          <div className="bg-colorede py-8 mt-5 rounded-xl pl-6 text-2xl">
+            {notice}
+          </div>
         )}
       </div>
     </div>
