@@ -4,24 +4,48 @@ import GiftOptionField from "../ui/GiftOptionField";
 import Title from "../ui/Title";
 import { FundingOption } from "@/Model/Funding";
 import { FundingOptionsState } from "@/store/UploadState/UploadStates";
-import { useSetRecoilState } from "recoil";
+import { useRecoilCallback, useRecoilState } from "recoil";
 
-const defaultOptions: FundingOption & { isSelected: boolean } = {
+const defaultOption: FundingOption & { isSelected: boolean } = {
   name: "",
   price: 0,
   isPickup: false,
   items: [],
   quantity: 0,
   isSelected: false,
+  pickupInfo: "",
 };
 
 const GiftOptions = () => {
-  const [options, setOptions] = useState([
-    { ...defaultOptions },
-    { ...defaultOptions },
-    { ...defaultOptions },
-  ]);
-  const setGlobalOption = useSetRecoilState(FundingOptionsState);
+  const [globalOption, setGlobalOption] = useRecoilState(FundingOptionsState);
+  console.log(globalOption);
+
+  let defaultOptions: (FundingOption & { isSelected: boolean })[] = [];
+
+  for (let i = 0; i < 3; i++) {
+    defaultOptions.push(
+      globalOption[i]
+        ? { ...globalOption[i], isSelected: true }
+        : defaultOption,
+    );
+  }
+
+  // 기존에 사용자가 입력한 데이터를 불러와서 상태로 저장. 없다면 기본값으로 초기화
+  const [options, setOptions] = useState(defaultOptions);
+
+  /**
+   * 선택된 옵션만 필터링하여 전역 옵션 데이터(전역 객체)으로 저장
+   * 이는 useEffect를 통해 option값이 바뀔 때마다 전역 상태로 저장됨
+   */
+
+  // const logRecoilState = useRecoilCallback(
+  //   ({ snapshot }) =>
+  //     async () => {
+  //       const state = await snapshot.getPromise(FundingOptionsState);
+  //       console.log("Current Recoil State:", state);
+  //     },
+  //   [],
+  // );
 
   const newGlobalOptions = useMemo(
     () =>
@@ -32,7 +56,10 @@ const GiftOptions = () => {
   );
 
   useEffect(() => {
-    setGlobalOption(newGlobalOptions);
+    if (JSON.stringify(newGlobalOptions) !== JSON.stringify(globalOption)) {
+      setGlobalOption(newGlobalOptions);
+    }
+    // logRecoilState();
   }, [newGlobalOptions, setGlobalOption]);
 
   const changeIsSelected = useCallback((index: number) => {
@@ -86,6 +113,14 @@ const GiftOptions = () => {
     });
   }, []);
 
+  const changePickupInfo = useCallback((index: number, pickupInfo: string) => {
+    setOptions((prev) => {
+      const newOptions = [...prev];
+      newOptions[index].pickupInfo = pickupInfo;
+      return newOptions;
+    });
+  }, []);
+
   return (
     <>
       <Title headerTitle="옵션 설정" />
@@ -99,6 +134,7 @@ const GiftOptions = () => {
           changeIsPickup={(data) => changeIsPickup(index, data)}
           changeItems={(data) => changeItems(index, data)}
           changeQuantity={(data) => changeQuantity(index, data)}
+          changePickupInfo={(data) => changePickupInfo(index, data)}
         />
       ))}
     </>

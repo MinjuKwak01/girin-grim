@@ -3,13 +3,15 @@ import {
   banNoticeAtom,
   fundingCategoryAtom,
   fundingDetailAtom,
+  fundingGoalAtom,
+  fundingOptionIsPickupAtom,
+  fundingOptionItemsAtom,
+  fundingOptionNameAtom,
+  fundingOptionPickupInfoAtom,
+  fundingOptionPriceAtom,
+  fundingOptionQuantityAtom,
   FundingOptionsAtom,
   fundingTitleAtom,
-  fundintOptionIsPickupAtom,
-  fundintOptionItemsAtom,
-  fundintOptionNameAtom,
-  fundintOptionPriceAtom,
-  fundintOptionQuantityAtom,
 } from "./UploadAtoms";
 import { FundingInfo, FundingOption } from "@/Model/Funding";
 
@@ -57,40 +59,44 @@ export const FundingInfoState = selector({
 
 const FundingOptionState = selector({
   key: "FundingOptionStateSelector",
-  get: ({ get }) => {
-    const name = get(fundintOptionNameAtom);
-    const price = get(fundintOptionPriceAtom);
-    const quantity = get(fundintOptionQuantityAtom);
-    const isPickup = get(fundintOptionIsPickupAtom);
-    const items = get(fundintOptionItemsAtom);
-
-    return {
-      name,
-      price,
-      quantity,
-      isPickup,
-      items,
-    };
-  },
+  get: ({ get }) => ({
+    name: get(fundingOptionNameAtom),
+    price: get(fundingOptionPriceAtom),
+    quantity: get(fundingOptionQuantityAtom),
+    isPickup: get(fundingOptionIsPickupAtom),
+    items: get(fundingOptionItemsAtom),
+    pickupInfo: get(fundingOptionPickupInfoAtom),
+  }),
   set: ({ set }, newValue) => {
-    const { isPickup, items, name, price, quantity } =
+    const { name, price, quantity, isPickup, items, pickupInfo } =
       newValue as FundingOption;
-
-    set(fundintOptionNameAtom, name);
-    set(fundintOptionPriceAtom, price);
-    set(fundintOptionQuantityAtom, quantity);
-    set(fundintOptionIsPickupAtom, isPickup);
-    set(fundintOptionItemsAtom, items);
+    set(fundingOptionNameAtom, name);
+    set(fundingOptionPriceAtom, price);
+    set(fundingOptionQuantityAtom, quantity);
+    set(fundingOptionIsPickupAtom, isPickup);
+    set(fundingOptionItemsAtom, items);
+    set(fundingOptionPickupInfoAtom, pickupInfo);
   },
 });
-
+/**
+ * 선택된 펀딩 옵션들의 상태를 관리하는 selector
+ * FundingOption의 경우 현장수령 정보에 맞는 pickupInfo를 추가로 관리한다.
+ *
+ * 이는 서버 요청시 변환과정이 필요하다.
+ */
 export const FundingOptionsState = selector<FundingOption[]>({
   key: "FundingOptionsStateSelector",
+  get: ({ get }) => get(FundingOptionsAtom),
+  set: ({ set }, newValue) => set(FundingOptionsAtom, newValue),
+});
+
+export const UploadPlanState = selector({
+  key: "UploadPlanStateSelector",
   get: ({ get }) => {
-    const options = get(FundingOptionState);
-    return [options];
+    const fundingGoal = get(fundingGoalAtom);
+    return { ...fundingGoal };
   },
   set: ({ set }, newValue) => {
-    set(FundingOptionsAtom, newValue);
+    set(fundingGoalAtom, newValue);
   },
 });

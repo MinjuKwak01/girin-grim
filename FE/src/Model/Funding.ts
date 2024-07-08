@@ -33,6 +33,7 @@ export type FundingOption = {
   quantity: number;
   isPickup: boolean;
   items: Omit<FundingItem, "itemId">[];
+  pickupInfo: string;
 };
 
 export type FundingItem = {
