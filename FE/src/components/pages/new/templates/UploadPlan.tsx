@@ -23,14 +23,42 @@ const UploadPlan = () => {
   const [fundingGoal, setFundingGoal] = useState(defaultGola);
   const { goalMoney, endTime, estimatedStartTime, startTime } = fundingGoal;
 
-  const changeGoalMoney = (input: string) => {
-    setFundingGoal({ ...fundingGoal, goalMoney: input });
+  const changeGoalMoney = (goalMoney: string) => {
+    setFundingGoal({ ...fundingGoal, goalMoney });
   };
   const changeStartTime = (startTime: Date) => {
-    setFundingGoal({ ...fundingGoal, startTime });
+    if (startTime < new Date()) {
+      alert("오늘 이후의 날짜를 선택해주세요.");
+      return;
+    }
+
+    if (startTime >= endTime)
+      setFundingGoal({ ...fundingGoal, startTime, endTime: startTime });
+    else setFundingGoal({ ...fundingGoal, startTime });
   };
   const changeEndTime = (endTime: Date) => {
+    if (endTime < startTime) {
+      alert("시작일보다 빠른 날짜를 선택할 수 없습니다.");
+      return;
+    }
+    if (endTime < new Date()) {
+      alert("오늘 이후의 날짜를 선택해주세요.");
+      return;
+    }
     setFundingGoal({ ...fundingGoal, endTime });
+  };
+  const changeEstimatedStartTime = (estimatedStartTime: Date) => {
+    if (estimatedStartTime < new Date()) {
+      alert("오늘 이후의 날짜를 선택해주세요.");
+      return;
+    }
+
+    if (estimatedStartTime <= endTime) {
+      alert("실행일은 종료일 이후여야 합니다.");
+      return;
+    }
+
+    setFundingGoal({ ...fundingGoal, estimatedStartTime });
   };
 
   const amountAfterFees = +goalMoney >= 100 ? +goalMoney * 0.9 : 0;
@@ -73,9 +101,7 @@ const UploadPlan = () => {
               <div className="flex gap-8 items-center">
                 <DateInput
                   date={estimatedStartTime}
-                  setDate={(date) =>
-                    setFundingGoal({ ...fundingGoal, estimatedStartTime: date })
-                  }
+                  setDate={changeEstimatedStartTime}
                 />
               </div>
             </div>
