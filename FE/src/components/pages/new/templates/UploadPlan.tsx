@@ -4,27 +4,29 @@ import InputField from "../organisms/InputField";
 import Title from "../ui/Title";
 import DateInput from "../ui/DateInput";
 import FieldHeader from "../ui/FieldHeader";
+import { useRecoilState } from "recoil";
+import { UploadPlanState } from "@/store/UploadState/UploadStates";
 
 type FundingGoal = {
-  goalMoney: string;
+  goalMoney: number;
   startTime: Date;
   endTime: Date;
   estimatedStartTime: Date;
 };
 
 const defaultGola: FundingGoal = {
-  goalMoney: "",
+  goalMoney: 0,
   startTime: new Date(),
   endTime: new Date(),
   estimatedStartTime: new Date(),
 };
 
 const UploadPlan = () => {
-  const [fundingGoal, setFundingGoal] = useState(defaultGola);
+  const [fundingGoal, setFundingGoal] = useRecoilState(UploadPlanState);
   const { goalMoney, endTime, estimatedStartTime, startTime } = fundingGoal;
 
-  const changeGoalMoney = (goalMoney: string) => {
-    setFundingGoal({ ...fundingGoal, goalMoney });
+  const changeGoalMoney = (goalMoney: number) => {
+    setFundingGoal({ ...fundingGoal, goalMoney: goalMoney });
   };
   const changeStartTime = (startTime: Date) => {
     if (startTime < new Date()) {
@@ -74,7 +76,7 @@ const UploadPlan = () => {
           headerText="목표 금액"
           contentText="펀딩 목표 금액을 입력해주세요. (기부형은 100크레파스(원)부터 가능합니다.)"
           changehandler={changeGoalMoney}
-          state={goalMoney + ""}
+          state={goalMoney}
           layout="flex w-full gap-5"
           notice={amountAfterFeesString}
         />

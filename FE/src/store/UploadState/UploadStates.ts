@@ -3,6 +3,7 @@ import {
   banNoticeAtom,
   fundingCategoryAtom,
   fundingDetailAtom,
+  fundingGoalAtom,
   fundingOptionIsPickupAtom,
   fundingOptionItemsAtom,
   fundingOptionNameAtom,
@@ -87,4 +88,15 @@ export const FundingOptionsState = selector<FundingOption[]>({
   key: "FundingOptionsStateSelector",
   get: ({ get }) => get(FundingOptionsAtom),
   set: ({ set }, newValue) => set(FundingOptionsAtom, newValue),
+});
+
+export const UploadPlanState = selector({
+  key: "UploadPlanStateSelector",
+  get: ({ get }) => {
+    const fundingGoal = get(fundingGoalAtom);
+    return { ...fundingGoal };
+  },
+  set: ({ set }, newValue) => {
+    set(fundingGoalAtom, newValue);
+  },
 });

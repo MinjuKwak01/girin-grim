@@ -57,3 +57,13 @@ export const FundingOptionsAtom = atom<FundingOption[]>({
   key: "FundingOptionsAtom",
   default: [],
 });
+
+export const fundingGoalAtom = atom({
+  key: "fundingGoalAtom",
+  default: {
+    goalMoney: 0,
+    startTime: new Date(),
+    endTime: new Date(),
+    estimatedStartTime: new Date(),
+  },
+});

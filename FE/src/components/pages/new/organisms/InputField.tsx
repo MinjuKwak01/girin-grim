@@ -1,29 +1,33 @@
 import { cn } from "@/utils/cn";
 import FieldHeader from "../ui/FieldHeader";
+type InputType = "text" | "number";
 
-type Props = {
+type Props<T extends InputType> = {
   headerText?: string;
   contentText: string;
-  changehandler: (input: string) => void;
-  state: string;
+  changehandler: (input: T extends "number" ? number : string) => void;
+  state: T extends "number" ? number : string;
   layout?: string;
-  type?: "text" | "number";
+  type?: T;
   children?: React.ReactNode;
   disabled?: boolean;
   notice?: string;
 };
 
-export default function InputField({
+export default function InputField<T extends InputType>({
   headerText,
   contentText,
   changehandler,
   state,
   layout,
   disabled,
-  type = "text",
+  type = "text" as T,
   notice,
-}: Readonly<Props>) {
+}: Readonly<Props<T>>) {
   layout = layout || "";
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    changehandler(e.target.value as any);
+  };
   return (
     <div
       className={cn("grid grid-cols-[1fr_8fr] w-full", {
@@ -35,7 +39,7 @@ export default function InputField({
         <input
           className="text-2xl px-8 py-5 rounded-xl border-2 border-neutral-400 outline-none w-full"
           placeholder={contentText}
-          onChange={(e) => changehandler(e.target.value)}
+          onChange={onChange}
           value={state}
           type={type}
           disabled={disabled}
