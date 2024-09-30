@@ -3,6 +3,7 @@ package com.starshop.giringrim.funding.service;
 
 import com.starshop.giringrim.funding.dto.FundingReqDtos;
 import com.starshop.giringrim.funding.dto.FundingRespDtos;
+import com.starshop.giringrim.member.entity.Member;
 import com.starshop.giringrim.utils.security.UserDetailsImpl;
 
 public interface FundingService {
@@ -16,7 +17,7 @@ public interface FundingService {
     /*
     *   펀딩 아이디값으로 펀딩 조회
      */
-    FundingRespDtos.GetFundingDto getFunding(Long id, UserDetailsImpl userDetails);
+    FundingRespDtos.GetFundingDto getFunding(Long id, Member loginMember);
 
     /*
     *   펀딩 아이디값으로 펀딩 설명 조회
@@ -31,12 +32,12 @@ public interface FundingService {
     /*
      *   홈 조회 메서드
      */
-    FundingRespDtos.HomeDto home(Integer page, Long universityId, String fundingType, String keyword, String method, UserDetailsImpl userDetails);
+    FundingRespDtos.HomeDto home(Integer page, Long universityId, String fundingType, String keyword, String method, Member loginMember);
 
     /*
      *   공지 작성
      */
-    void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, UserDetailsImpl userDetails);
+    void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, Member loginMember);
 
 
     /*

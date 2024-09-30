@@ -1,6 +1,7 @@
 package com.starshop.giringrim.university.controller;
 
 import com.starshop.giringrim.university.service.UnivService;
+import com.starshop.giringrim.university.service.UnivServiceImpl;
 import com.starshop.giringrim.university.dto.UnivRespDtos;
 import com.starshop.giringrim.utils.common.ApiResponseGenerator;
 import lombok.RequiredArgsConstructor;

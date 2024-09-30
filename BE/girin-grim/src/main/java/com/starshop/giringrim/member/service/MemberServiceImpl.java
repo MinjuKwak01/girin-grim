@@ -11,10 +11,12 @@ import com.starshop.giringrim.member.repository.MemberRepository;
 import com.starshop.giringrim.university.entity.University;
 import com.starshop.giringrim.university.repository.UnivRepository;
 import com.starshop.giringrim.utils.exception.ErrorMessage;
+import com.starshop.giringrim.utils.security.MemberAccount;
 import com.starshop.giringrim.utils.security.TokenGenerator;
 import com.starshop.giringrim.utils.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -114,22 +116,22 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public MemberRespDtos.ProfileRespDto getProfile(Long memberId, UserDetailsImpl userDetails) {
+    public MemberRespDtos.ProfileRespDto getProfile(Long memberId, Member loginMember) {
         //pathvariable로 받은 id가 존재하지 않는 회원이면 예외
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
         boolean isMine = true;
 
-        String role = SecurityContextHolder.getContext().getAuthentication().getName();
+       // String role = SecurityContextHolder.getContext().getAuthentication().getName();
         //비로그인 유저일 경우
-        if(role.equals("anonymousUser")){
-            isMine = false;
-            return new MemberRespDtos.ProfileRespDto(member,isMine);
-        }
+//        if(role.equals("anonymousUser")){
+//            isMine = false;
+//            return new MemberRespDtos.ProfileRespDto(member,isMine);
+//        }
 
         //pathvariable로 받은 id와 로그인한 사용자의 id가 다른지 확인
-        if(!member.getEmail().equals(userDetails.getEmail())){
+        if(!member.getEmail().equals(loginMember.getEmail())){
             isMine = false;
             return new MemberRespDtos.ProfileRespDto(member,isMine);
         }
@@ -141,16 +143,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true)
-    public MemberRespDtos.HeaderInfoRespDto getHeaderInfo(UserDetailsImpl userDetails) {
-        //로그인 안 한 사용자 일 경우
+    public MemberRespDtos.HeaderInfoRespDto getHeaderInfo(Member loginMember) {
 
-        String role = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(role.equals("anonymousUser")){
+        //로그인 안 한 사용자 일 경우
+        if(loginMember == null){
             throw new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST);
         }
 
         //로그인 한 사용자 정보를 조회
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 

@@ -46,9 +46,9 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional(readOnly = true)
-    public PaymentRespDtos.PaymentDetailsDto getPaymentDetails(Long fundingId, UserDetailsImpl userDetails) {
+    public PaymentRespDtos.PaymentDetailsDto getPaymentDetails(Long fundingId, Member loginMember) {
         //서포터 정보
-        Member supporter = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member supporter = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 
@@ -72,8 +72,8 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional
-    public void chargeCoins(PaymentReqDtos.ChargeDto reqDto, UserDetailsImpl userDetails) {
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+    public void chargeCoins(PaymentReqDtos.ChargeDto reqDto, Member loginMember) {
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
         BigDecimal myCoin = member.getCoin().add(reqDto.getCoin());
@@ -83,8 +83,8 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional(readOnly = true)
-    public PaymentRespDtos.ChargeDetailsDto getChargeDetails(UserDetailsImpl userDetails) {
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+    public PaymentRespDtos.ChargeDetailsDto getChargeDetails(Member loginMember) {
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
         return new PaymentRespDtos.ChargeDetailsDto(member);
@@ -93,10 +93,10 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional
-    public void fundingPayment(PaymentReqDtos.FundingPaymentDto reqDto, Long fundingId, UserDetailsImpl userDetails) {
+    public void fundingPayment(PaymentReqDtos.FundingPaymentDto reqDto, Long fundingId, Member loginMember) {
 
         //로그인 사용자 정보 얻어오기
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 
@@ -207,10 +207,10 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional(readOnly = true)
-    public PaymentRespDtos.PaymentHistoryDto fundingHistory(Long memberId, Long fundingId, UserDetailsImpl userDetails){
+    public PaymentRespDtos.PaymentHistoryDto fundingHistory(Long memberId, Long fundingId, Member loginMember){
 
         //로그인 사용자 정보 얻어오기
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 
@@ -257,7 +257,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional(readOnly = true)
-    public PaymentRespDtos.PaymentListDto fundingHistoryList(Long memberId, UserDetailsImpl userDetails){
+    public PaymentRespDtos.PaymentListDto fundingHistoryList(Long memberId, Member loginMember){
 
         //존재하지 않는 멤버 예외
         Member member = memberRepository.findById(memberId).orElseThrow(

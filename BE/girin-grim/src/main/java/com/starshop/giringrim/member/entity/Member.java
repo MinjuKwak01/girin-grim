@@ -49,6 +49,10 @@ public class Member extends BaseEntity {
         this.aboutMe= aboutMe;
     }
 
+    public Member(String email){
+        this.email = email;
+    }
+
     public void chargeCoins(BigDecimal coin){
         this.coin = coin;
     }
