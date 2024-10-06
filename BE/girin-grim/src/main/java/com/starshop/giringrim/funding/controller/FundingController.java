@@ -4,7 +4,9 @@ import com.starshop.giringrim.funding.dto.FundingReqDtos;
 import com.starshop.giringrim.funding.dto.FundingRespDtos;
 import com.starshop.giringrim.funding.service.FundingService;
 import com.starshop.giringrim.funding.service.FundingServiceImpl;
+import com.starshop.giringrim.member.entity.Member;
 import com.starshop.giringrim.utils.common.ApiResponseGenerator;
+import com.starshop.giringrim.utils.common.LoginUser;
 import com.starshop.giringrim.utils.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +23,13 @@ public class FundingController {
     private final FundingService fundingService;
 
     @GetMapping("/home")
-    public ResponseEntity<?> home(  @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                    @RequestParam(value="uni", required = false) Long universityId,
-                                    @RequestParam(value = "category", required = false) String fundingType,
-                                    @RequestParam(value = "q", required = false) String keyword,
-                                    @RequestParam(value = "sort", required = false) String method,
-                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
-        FundingRespDtos.HomeDto respDto = fundingService.home(page, universityId, fundingType, keyword, method, userDetails);
+    public ResponseEntity<?> home(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                  @RequestParam(value="uni", required = false) Long universityId,
+                                  @RequestParam(value = "category", required = false) String fundingType,
+                                  @RequestParam(value = "q", required = false) String keyword,
+                                  @RequestParam(value = "sort", required = false) String method,
+                                  @LoginUser Member loginMember){
+        FundingRespDtos.HomeDto respDto = fundingService.home(page, universityId, fundingType, keyword, method, loginMember);
         return ApiResponseGenerator.success(respDto, HttpStatus.OK);
     }
 
@@ -35,8 +37,8 @@ public class FundingController {
     *   펀딩 작성
      */
     @PostMapping("/funding")
-    public ResponseEntity<?> createFunding(@Valid @RequestBody FundingReqDtos.UploadDto uploadDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        fundingService.createFunding(uploadDto, userDetails.getEmail());
+    public ResponseEntity<?> createFunding(@Valid @RequestBody FundingReqDtos.UploadDto uploadDto, @LoginUser Member loginMember) {
+        fundingService.createFunding(uploadDto, loginMember.getEmail());
         return ApiResponseGenerator.success(HttpStatus.OK);
 
     }
@@ -45,8 +47,8 @@ public class FundingController {
     *   펀딩 아이디로 펀딩 조회
      */
     @GetMapping("/funding/{fundingId}")
-    public ResponseEntity<?> getFunding(@PathVariable Long fundingId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        FundingRespDtos.GetFundingDto fundingDto = fundingService.getFunding(fundingId, userDetails);
+    public ResponseEntity<?> getFunding(@PathVariable Long fundingId,@LoginUser Member loginMember){
+        FundingRespDtos.GetFundingDto fundingDto = fundingService.getFunding(fundingId, loginMember);
         return ApiResponseGenerator.success(fundingDto, HttpStatus.OK);
     }
 
@@ -73,8 +75,8 @@ public class FundingController {
     *   공지사항 작성
     */
     @PostMapping("/api/funding/{fundingId}/notice")
-    public ResponseEntity<?> createNotice(@RequestBody FundingReqDtos.NoticeDto noticeDto, @PathVariable Long fundingId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        fundingService.createNotice(noticeDto, fundingId, userDetails);
+    public ResponseEntity<?> createNotice(@RequestBody FundingReqDtos.NoticeDto noticeDto, @PathVariable Long fundingId, @LoginUser Member loginMember){
+        fundingService.createNotice(noticeDto, fundingId, loginMember);
         return ApiResponseGenerator.success(HttpStatus.OK);
     }
 

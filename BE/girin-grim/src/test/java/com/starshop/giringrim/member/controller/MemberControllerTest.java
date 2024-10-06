@@ -41,9 +41,6 @@ class MemberControllerTest extends TestConfig{
     ObjectMapper objectMapper;
 
     @Autowired
-    MemberService memberService;
-
-    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -51,10 +48,6 @@ class MemberControllerTest extends TestConfig{
 
     @Autowired
     FavUniversityRepository favUniversityRepository;
-
-    @Autowired
-    UnivRepository univRepository;
-
 
     @Autowired
     MockMvc mockMvc;
@@ -77,7 +70,8 @@ class MemberControllerTest extends TestConfig{
                 "밍주",
                 "asdf@gmail.com",
                 "asdf!1234",
-                favUniversityDtoList
+                favUniversityDtoList,
+                null
         );
 
         String requestBody = objectMapper.writeValueAsString(joinReqDto);
@@ -120,7 +114,8 @@ class MemberControllerTest extends TestConfig{
                 "밍주",
                 "asdf@gmail.com",
                 "asdf!1234",
-                favUniversityDtoList
+                favUniversityDtoList,
+                null
         );
 
         String requestBody = objectMapper.writeValueAsString(joinReqDto);
@@ -157,7 +152,8 @@ class MemberControllerTest extends TestConfig{
                 "밍주",
                 "asdf@gmail.com",
                 "asdf!1234",
-                favUniversityDtoList
+                favUniversityDtoList,
+                null
         );
 
         String requestBody = objectMapper.writeValueAsString(joinReqDto);
@@ -213,7 +209,8 @@ class MemberControllerTest extends TestConfig{
                 "밍주",
                 "asdf@gmail.com",
                 "asdf!1234",
-                favUniversityDtoList
+                favUniversityDtoList,
+                null
         );
 
         String requestBody = objectMapper.writeValueAsString(joinReqDto);
@@ -250,7 +247,8 @@ class MemberControllerTest extends TestConfig{
                 "밍주",
                 "asdfgmail.com",
                 "asdf!1234",
-                favUniversityDtoList
+                favUniversityDtoList,
+                null
         );
 
         String requestBody = objectMapper.writeValueAsString(joinReqDto);
@@ -287,7 +285,8 @@ class MemberControllerTest extends TestConfig{
                 "밍주",
                 "asdf@gmail.com",
                 "asdf1234",
-                favUniversityDtoList
+                favUniversityDtoList,
+                null
         );
 
         String requestBody = objectMapper.writeValueAsString(joinReqDto);
@@ -495,7 +494,7 @@ class MemberControllerTest extends TestConfig{
         System.out.println("테스트 " + responseBody);
 
         resultActions.andExpect(jsonPath("$.success").value("false"));
-        resultActions.andExpect(jsonPath("$.error.statusCode").value(401));
+        resultActions.andExpect(jsonPath("$.error.statusCode").value(400));
 
     }
 

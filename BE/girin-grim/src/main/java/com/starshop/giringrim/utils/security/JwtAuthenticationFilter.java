@@ -49,8 +49,15 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             UserDetailsImpl userDetails = new UserDetailsImpl(member);
 
             //인증된 사용자의 정보
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+       //     Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+       //     SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken( // 토큰 생성
+                    new MemberAccount(member), // Principal 객체설정
+                    member.getEmail());
+
+            // 로그인 처리
+            SecurityContextHolder.getContext().setAuthentication(token);
 
             //다음 필터로 넘어감
             filterChain.doFilter(request, response);

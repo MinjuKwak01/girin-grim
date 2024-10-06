@@ -116,7 +116,7 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional(readOnly = true)
-    public FundingRespDtos.GetFundingDto getFunding(Long id, UserDetailsImpl userDetails) {
+    public FundingRespDtos.GetFundingDto getFunding(Long id, Member loginMember) {
 
         //본인이 작성한 펀딩인지
         boolean isMine = true;
@@ -145,8 +145,7 @@ public class FundingServiceImpl implements FundingService {
 
         //로그인을 안 한 사용자, 본인의 펀딩 글이 아니라면 isMine은 false,
         //로그인을 안 한 사용자면 coin은 null
-        String role = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(role.equals("anonymousUser")){
+        if(loginMember == null){
             isMine = false;
             return FundingRespDtos.GetFundingDto.builder()
                     .isMine(isMine)
@@ -157,12 +156,12 @@ public class FundingServiceImpl implements FundingService {
                     .build();
         }
 
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //본인의 펀딩 글이 아닐 경우
-        if(!Objects.equals(funding.getMember().getEmail(), userDetails.getEmail())){
+        if(!Objects.equals(funding.getMember().getEmail(), loginMember.getEmail())){
             isMine = false;
             return FundingRespDtos.GetFundingDto.builder()
                     .isMine(isMine)
@@ -276,12 +275,10 @@ public class FundingServiceImpl implements FundingService {
 
     @Override
     @Transactional(readOnly = true)
-    public FundingRespDtos.HomeDto home(Integer page, Long universityId, String fundingType, String keyword, String method, UserDetailsImpl userDetails){
-
-        String role = SecurityContextHolder.getContext().getAuthentication().getName();
+    public FundingRespDtos.HomeDto home(Integer page, Long universityId, String fundingType, String keyword, String method, Member loginMember){
 
         //비로그인 유저일 경우
-        if(role.equals("anonymousUser")){
+        if(loginMember == null){
             Pageable pageable = PageRequest.of(page,6);
 
             //회원가입했을때 설정 대학들 없으므로 null
@@ -296,7 +293,7 @@ public class FundingServiceImpl implements FundingService {
         }
 
         //로그인 한 사용자의 정보를 이용해 favUniversity 리스트 얻어오기
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 
@@ -323,19 +320,19 @@ public class FundingServiceImpl implements FundingService {
     }
 
     @Transactional
-    public void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, UserDetailsImpl userDetails){
+    public void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, Member loginMember){
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
                 () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
         );
 
         //로그인 사용자 정보 얻어오기
-        Member member = memberRepository.findByEmail(userDetails.getEmail()).orElseThrow(
+        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
                 () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //로그인한 사용자와 펀딩 작성자의 정보가 같아야 함
         if(!member.getId().equals(funding.getMember().getId())){
-            throw new RuntimeException("공지사항 작성 권한이 없습니다");
+            throw new IllegalArgumentException("공지사항 작성 권한이 없습니다");
         }
         funding.updateNotice(noticeDto.getNotice());
     }

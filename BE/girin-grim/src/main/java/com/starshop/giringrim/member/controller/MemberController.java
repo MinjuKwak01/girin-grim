@@ -3,15 +3,14 @@ package com.starshop.giringrim.member.controller;
 
 import com.starshop.giringrim.member.dto.MemberReqDtos;
 import com.starshop.giringrim.member.dto.MemberRespDtos;
+import com.starshop.giringrim.member.entity.Member;
 import com.starshop.giringrim.member.service.MemberService;
-import com.starshop.giringrim.member.service.MemberServiceImpl;
 import com.starshop.giringrim.utils.common.ApiResponseGenerator;
-import com.starshop.giringrim.utils.security.UserDetailsImpl;
+import com.starshop.giringrim.utils.common.LoginUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,8 +51,8 @@ public class MemberController {
      * 프로필 조회
      */
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<?> getProfile(@PathVariable("memberId") Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        MemberRespDtos.ProfileRespDto profileResDto = memberService.getProfile(memberId, userDetails);
+    public ResponseEntity<?> getProfile(@PathVariable("memberId") Long memberId, @LoginUser Member loginMember){
+        MemberRespDtos.ProfileRespDto profileResDto = memberService.getProfile(memberId, loginMember);
         return ApiResponseGenerator.success(profileResDto, HttpStatus.OK);
     }
 
@@ -61,8 +60,8 @@ public class MemberController {
      * 헤더 로그인 정보
      */
     @GetMapping("/member")
-    public ResponseEntity<?> getHeaderInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        MemberRespDtos.HeaderInfoRespDto headerInfoRespDto = memberService.getHeaderInfo(userDetails);
+    public ResponseEntity<?> getHeaderInfo(@LoginUser Member member){
+        MemberRespDtos.HeaderInfoRespDto headerInfoRespDto = memberService.getHeaderInfo(member);
         return ApiResponseGenerator.success(headerInfoRespDto, HttpStatus.OK);
     }
 
