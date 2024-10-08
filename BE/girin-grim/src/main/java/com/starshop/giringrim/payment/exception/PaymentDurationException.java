@@ -1,13 +1,12 @@
 package com.starshop.giringrim.payment.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class PaymentDurationException extends RuntimeException{
-    private final ErrorMessage errorMessage;
+    private final PaymentErrorMessage errorMessage;
 
-    public PaymentDurationException(ErrorMessage errorMessage) {
+    public PaymentDurationException(PaymentErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

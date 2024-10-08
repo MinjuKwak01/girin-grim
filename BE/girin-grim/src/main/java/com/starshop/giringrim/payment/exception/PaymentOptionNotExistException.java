@@ -1,13 +1,12 @@
 package com.starshop.giringrim.payment.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class PaymentOptionNotExistException extends RuntimeException{
-    private final ErrorMessage errorMessage;
+    private final PaymentErrorMessage errorMessage;
 
-    public PaymentOptionNotExistException(ErrorMessage errorMessage) {
+    public PaymentOptionNotExistException(PaymentErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }
