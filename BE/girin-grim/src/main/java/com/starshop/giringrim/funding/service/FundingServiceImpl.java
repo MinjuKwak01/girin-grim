@@ -15,6 +15,7 @@ import com.starshop.giringrim.funding.dto.FundingRespDtos;
 import com.starshop.giringrim.funding.repository.FundingRepositoryCustom;
 import com.starshop.giringrim.funding.repository.FundingSearchCondition;
 import com.starshop.giringrim.member.entity.Member;
+import com.starshop.giringrim.member.exception.MemberErrorMessage;
 import com.starshop.giringrim.member.exception.MemberNotExistException;
 import com.starshop.giringrim.member.exception.UniversitySelectionException;
 import com.starshop.giringrim.member.repository.MemberRepository;
@@ -24,13 +25,10 @@ import com.starshop.giringrim.option.item.Item;
 import com.starshop.giringrim.option.item.ItemRepository;
 import com.starshop.giringrim.university.repository.UnivRepository;
 import com.starshop.giringrim.university.entity.University;
-import com.starshop.giringrim.utils.exception.ErrorMessage;
-import com.starshop.giringrim.utils.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,12 +53,12 @@ public class FundingServiceImpl implements FundingService {
     public void createFunding(FundingReqDtos.UploadDto uploadDto, String email) {
         //유효하지 않은 멤버일 경우
         Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //요청body의 대학교가 존재하지 않을 경우
         University university = univRepository.findById(uploadDto.getFunding().getUniversity()).orElseThrow(
-                () -> new UniversitySelectionException(ErrorMessage.SELECTED_WRONG_UNIVERSITY)
+                () -> new UniversitySelectionException(MemberErrorMessage.SELECTED_WRONG_UNIVERSITY)
         );
 
         Instant instant = Instant.now();
@@ -69,15 +67,15 @@ public class FundingServiceImpl implements FundingService {
 
         //펀딩 시작시간이 현재시간보다 빠를 경우
         if(uploadDto.getFunding().getStartTime().isBefore(ldt)){
-            throw new FundingStartUnavailableException(ErrorMessage.FUNDING_START_DATE_UNAVAILABLE);
+            throw new FundingStartUnavailableException(FundingErrorMessage.FUNDING_START_DATE_UNAVAILABLE);
         }
         //펀딩 시작시간보다 종료시간이 느릴 경우
         if(!uploadDto.getFunding().getEndTime().isAfter(uploadDto.getFunding().getStartTime())){
-            throw new FundingDurationUnavailableException(ErrorMessage.FUNDING_DURATION_UNAVAILABLE);
+            throw new FundingDurationUnavailableException(FundingErrorMessage.FUNDING_DURATION_UNAVAILABLE);
         }
         //펀딩 실행예정시간이 펀딩 종료시간 이후가 아닐 경우
         if(uploadDto.getFunding().getEstimatedStartTime().isBefore(uploadDto.getFunding().getEndTime())){
-            throw new FundingEstimateUnavailableException(ErrorMessage.FUNDING_ESTIMATE_DATE_UNAVAILABLE);
+            throw new FundingEstimateUnavailableException(FundingErrorMessage.FUNDING_ESTIMATE_DATE_UNAVAILABLE);
         }
 
         //DONATE인데 옵션이 있거나 GIFT인데 옵션이 없으면 예외처리 - 요청으로 type 받지 않고 백에서 판단해서 처리
@@ -110,7 +108,7 @@ public class FundingServiceImpl implements FundingService {
 
         //GIFT일 경우 goal money가 총 옵션의 가격까지만 입력 가능, 하지만 옵션 하나라도 quantity가 -1(무제한)일 경우 goal money 제한없음
         if(!isUnlimited && maxGoalMoney.compareTo(uploadDto.getFunding().getGoalMoney()) > 0){
-            throw new FundingGoalMoneyException(ErrorMessage.FUNDING_GOAL_MONEY_UNAVAILABLE);
+            throw new FundingGoalMoneyException(FundingErrorMessage.FUNDING_GOAL_MONEY_UNAVAILABLE);
         }
     }
 
@@ -123,7 +121,7 @@ public class FundingServiceImpl implements FundingService {
 
         //pathvariable로 받은 id로 펀딩 조회해오기
         Funding funding = fundingRepository.findFundingById(id).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
         //펀딩 아이디로 옵션 조회해오기
@@ -157,7 +155,7 @@ public class FundingServiceImpl implements FundingService {
         }
 
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //본인의 펀딩 글이 아닐 경우
@@ -196,13 +194,13 @@ public class FundingServiceImpl implements FundingService {
          */
 
         Funding fundingREAL = fundingRepository.findById(fundingId).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
 
         //요청body의 대학교가 존재하지 않을 경우
         University university = univRepository.findById(uploadDto.getFunding().getUniversity()).orElseThrow(
-                () -> new UniversitySelectionException(ErrorMessage.SELECTED_WRONG_UNIVERSITY)
+                () -> new UniversitySelectionException(MemberErrorMessage.SELECTED_WRONG_UNIVERSITY)
         );
 
         Instant instant = Instant.now();
@@ -211,15 +209,15 @@ public class FundingServiceImpl implements FundingService {
 
         //펀딩 시작시간이 현재시간보다 빠를 경우
         if(uploadDto.getFunding().getStartTime().isBefore(ldt)){
-            throw new FundingStartUnavailableException(ErrorMessage.FUNDING_START_DATE_UNAVAILABLE);
+            throw new FundingStartUnavailableException(FundingErrorMessage.FUNDING_START_DATE_UNAVAILABLE);
         }
         //펀딩 시작시간보다 종료시간이 느릴 경우
         if(!uploadDto.getFunding().getEndTime().isAfter(uploadDto.getFunding().getStartTime())){
-            throw new FundingDurationUnavailableException(ErrorMessage.FUNDING_DURATION_UNAVAILABLE);
+            throw new FundingDurationUnavailableException(FundingErrorMessage.FUNDING_DURATION_UNAVAILABLE);
         }
         //펀딩 실행예정시간이 펀딩 종료시간 이후가 아닐 경우
         if(uploadDto.getFunding().getEstimatedStartTime().isBefore(uploadDto.getFunding().getEndTime())){
-            throw new FundingEstimateUnavailableException(ErrorMessage.FUNDING_ESTIMATE_DATE_UNAVAILABLE);
+            throw new FundingEstimateUnavailableException(FundingErrorMessage.FUNDING_ESTIMATE_DATE_UNAVAILABLE);
         }
 
 
@@ -247,7 +245,7 @@ public class FundingServiceImpl implements FundingService {
 
         //GIFT일 경우 goal money가 총 옵션의 가격까지만 입력 가능, 하지만 옵션 하나라도 quantity가 -1(무제한)일 경우 goal money 제한없음
         if(!isUnlimited && maxGoalMoney.compareTo(uploadDto.getFunding().getGoalMoney()) > 0){
-            throw new FundingGoalMoneyException(ErrorMessage.FUNDING_GOAL_MONEY_UNAVAILABLE);
+            throw new FundingGoalMoneyException(FundingErrorMessage.FUNDING_GOAL_MONEY_UNAVAILABLE);
         }
         List<Option> optionList = optionRepository.findAllByFundingId(fundingREAL.getId());
        // List<Item> itemList = itemRepository.findAllByFundingId(fundingREAL.getId());
@@ -268,7 +266,7 @@ public class FundingServiceImpl implements FundingService {
     @Transactional(readOnly = true)
     public FundingRespDtos.FundingDescriptionDto getFundingDescription(Long id) {
         Funding funding = fundingRepository.findById(id).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
         return new FundingRespDtos.FundingDescriptionDto(funding);
     }
@@ -294,7 +292,7 @@ public class FundingServiceImpl implements FundingService {
 
         //로그인 한 사용자의 정보를 이용해 favUniversity 리스트 얻어오기
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         List<FavUniversity> favUniversityList = favUniversityRepository.findByMemberId(member.getId());
@@ -303,7 +301,7 @@ public class FundingServiceImpl implements FundingService {
         //사용자가 설정한 관심대학 이름을 가져와서 전국대학 리스트에서 아이디값 추출
         for(FavUniversity favUniversity : favUniversityList){
             University university = univRepository.findByName(favUniversity.getName()).orElseThrow(
-                    () -> new UniversitySelectionException(ErrorMessage.SELECTED_WRONG_UNIVERSITY)
+                    () -> new UniversitySelectionException(MemberErrorMessage.SELECTED_WRONG_UNIVERSITY)
             );
             universityIds.add(university.getId());
         }
@@ -322,12 +320,12 @@ public class FundingServiceImpl implements FundingService {
     @Transactional
     public void createNotice(FundingReqDtos.NoticeDto noticeDto, Long fundingId, Member loginMember){
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
         //로그인 사용자 정보 얻어오기
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //로그인한 사용자와 펀딩 작성자의 정보가 같아야 함
@@ -340,7 +338,7 @@ public class FundingServiceImpl implements FundingService {
     @Transactional(readOnly = true)
     public FundingRespDtos.NoticeDto getNotice(Long fundingId){
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
         //해당 방법은 NoticeDto에 String이 private으로 선언되어있어 불가능

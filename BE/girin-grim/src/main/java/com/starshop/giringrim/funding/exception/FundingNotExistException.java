@@ -1,13 +1,12 @@
 package com.starshop.giringrim.funding.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class FundingNotExistException extends RuntimeException{
-    private final ErrorMessage errorMessage;
+    private final FundingErrorMessage errorMessage;
 
-    public FundingNotExistException(ErrorMessage errorMessage) {
+    public FundingNotExistException(FundingErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }
