@@ -1,13 +1,12 @@
 package com.starshop.giringrim.university.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class RegionNotExistException extends RuntimeException{
-    private final ErrorMessage errorMessage;
+    private final UniversityErrorMessage errorMessage;
 
-    public RegionNotExistException(ErrorMessage errorMessage) {
+    public RegionNotExistException(UniversityErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

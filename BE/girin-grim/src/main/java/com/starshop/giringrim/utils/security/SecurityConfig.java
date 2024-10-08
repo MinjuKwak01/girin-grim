@@ -1,6 +1,6 @@
 package com.starshop.giringrim.utils.security;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
+import com.starshop.giringrim.utils.exception.SecurityErrorMessage;
 import com.starshop.giringrim.utils.security.exception.ForbiddenException;
 import com.starshop.giringrim.utils.security.exception.UnAuthorizedException;
 import lombok.RequiredArgsConstructor;
@@ -73,13 +73,13 @@ public class SecurityConfig {
         // 인증 실패 처리
         http.exceptionHandling(handling ->
                 handling.authenticationEntryPoint(((request, response, authException) -> {
-         resolver.resolveException(request, response, null, new UnAuthorizedException(ErrorMessage.UNAUTHORIZED_ERROR));
+         resolver.resolveException(request, response, null, new UnAuthorizedException(SecurityErrorMessage.UNAUTHORIZED_ERROR));
                 })));
 
         // 권한 실패 처리
         http.exceptionHandling(handling ->
                 handling.accessDeniedHandler(((request, response, accessDeniedException) -> {
-                    resolver.resolveException(request, response, null, new ForbiddenException(ErrorMessage.FORBIDDEN_ERROR));
+                    resolver.resolveException(request, response, null, new ForbiddenException(SecurityErrorMessage.FORBIDDEN_ERROR));
                 })));
 
 

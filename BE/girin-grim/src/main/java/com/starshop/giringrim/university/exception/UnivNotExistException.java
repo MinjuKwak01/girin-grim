@@ -1,14 +1,13 @@
 package com.starshop.giringrim.university.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class UnivNotExistException extends RuntimeException {
 
-    private final ErrorMessage errorMessage;
+    private final UniversityErrorMessage errorMessage;
 
-    public UnivNotExistException(ErrorMessage errorMessage) {
+    public UnivNotExistException(UniversityErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }
