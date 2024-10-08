@@ -6,23 +6,16 @@ import com.starshop.giringrim.member.dto.MemberRespDtos;
 import com.starshop.giringrim.member.entity.Member;
 import com.starshop.giringrim.member.exception.*;
 import com.starshop.giringrim.favUniversity.repository.FavUniversityRepository;
-import com.starshop.giringrim.member.exception.*;
 import com.starshop.giringrim.member.repository.MemberRepository;
 import com.starshop.giringrim.university.entity.University;
 import com.starshop.giringrim.university.repository.UnivRepository;
-import com.starshop.giringrim.utils.exception.ErrorMessage;
-import com.starshop.giringrim.utils.security.MemberAccount;
 import com.starshop.giringrim.utils.security.TokenGenerator;
-import com.starshop.giringrim.utils.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.findByEmail(joinReqDto.getEmail()).ifPresent(
                 member -> {
-                    throw new EmailAlreadyExistException(ErrorMessage.EMAIL_ALREADY_EXIST);
+                    throw new EmailAlreadyExistException(MemberErrorMessage.EMAIL_ALREADY_EXIST);
                 }
         );
 
@@ -54,16 +47,16 @@ public class MemberServiceImpl implements MemberService {
 
         //선택한 대학교가 1개 이상 10개 이하인지 확인
         if(joinReqDto.getFavUniversity().isEmpty() || joinReqDto.getFavUniversity().size() >=10){
-            throw new UniversityCountException(ErrorMessage.WRONG_UNIVERSITY_COUNT);
+            throw new UniversityCountException(MemberErrorMessage.WRONG_UNIVERSITY_COUNT);
         }
         joinReqDto.getFavUniversity().forEach(university -> {
             //전국 대학교 목록에 존재하는 대학교인지 확인
             University univ = univRepository.findById(university.getFavUniversityId()).orElseThrow(
-                    () -> new UniversitySelectionException(ErrorMessage.SELECTED_WRONG_UNIVERSITY)
+                    () -> new UniversitySelectionException(MemberErrorMessage.SELECTED_WRONG_UNIVERSITY)
             );
             //한명의 멤버에 대해서 중복된 대학교를 보냈는지 확인
             if(favUniversityRepository.findByNameAndMemberId(univ.getName(), member.getId()).isPresent()){
-                throw new UniversityDuplicationException(ErrorMessage.SELECTED_DUPLICATED_UNIVERSITY);
+                throw new UniversityDuplicationException(MemberErrorMessage.SELECTED_DUPLICATED_UNIVERSITY);
             }
             favUniversityRepository.save(university.toEntity(member, univ));
         });
@@ -74,20 +67,20 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     public void joinValidation(String email, String nickname) {
         if(nickname != null && email != null){
-            throw new ParameterCountException(ErrorMessage.PARAMETER_COUNT_ERROR);
+            throw new ParameterCountException(MemberErrorMessage.PARAMETER_COUNT_ERROR);
         }
 
         if(nickname == null){
             Optional<Member> member = memberRepository.findByEmail(email);
             if (member.isPresent()) {
-                throw new EmailAlreadyExistException(ErrorMessage.EMAIL_ALREADY_EXIST);
+                throw new EmailAlreadyExistException(MemberErrorMessage.EMAIL_ALREADY_EXIST);
             }
 
         }
         else{
             Member member = memberRepository.findByNickname(nickname);
             if(member != null){
-                throw new NicknameAlreadyExistException(ErrorMessage.NICKNAME_ALREADY_EXIST);
+                throw new NicknameAlreadyExistException(MemberErrorMessage.NICKNAME_ALREADY_EXIST);
             }
         }
 
@@ -98,12 +91,12 @@ public class MemberServiceImpl implements MemberService {
     public MemberRespDtos.LoginRespDto login(MemberReqDtos.LoginReqDto loginReqDto) {
 
         Member member = memberRepository.findByEmail(loginReqDto.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //비밀번호 일치 여부 확인
         if(!passwordEncoder.matches(loginReqDto.getPassword(), member.getPassword())){
-            throw new PasswordMatchException(ErrorMessage.PASSWORD_NOT_MATCH);
+            throw new PasswordMatchException(MemberErrorMessage.PASSWORD_NOT_MATCH);
         }
 
         //accessToken, refreshToken 생성
@@ -119,7 +112,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberRespDtos.ProfileRespDto getProfile(Long memberId, Member loginMember) {
         //pathvariable로 받은 id가 존재하지 않는 회원이면 예외
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
         boolean isMine = true;
 
@@ -147,12 +140,12 @@ public class MemberServiceImpl implements MemberService {
 
         //로그인 안 한 사용자 일 경우
         if(loginMember == null){
-            throw new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST);
+            throw new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST);
         }
 
         //로그인 한 사용자 정보를 조회
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         return new MemberRespDtos.HeaderInfoRespDto(member);

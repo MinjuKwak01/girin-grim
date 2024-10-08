@@ -1,14 +1,13 @@
 package com.starshop.giringrim.member.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class NicknameAlreadyExistException extends RuntimeException {
 
-    private final ErrorMessage errorMessage;
+    private final MemberErrorMessage errorMessage;
 
-    public NicknameAlreadyExistException(ErrorMessage errorMessage) {
+    public NicknameAlreadyExistException(MemberErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

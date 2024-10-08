@@ -1,14 +1,13 @@
 package com.starshop.giringrim.member.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class EmailAlreadyExistException extends RuntimeException{
 
-    private final ErrorMessage errorMessage;
+    private final MemberErrorMessage errorMessage;
 
-    public EmailAlreadyExistException(ErrorMessage errorMessage) {
+    public EmailAlreadyExistException(MemberErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

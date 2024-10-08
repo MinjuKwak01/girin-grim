@@ -1,13 +1,12 @@
 package com.starshop.giringrim.member.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class ParameterCountException extends RuntimeException {
-    private final ErrorMessage errorMessage;
+    private final MemberErrorMessage errorMessage;
 
-    public ParameterCountException(ErrorMessage errorMessage) {
+    public ParameterCountException(MemberErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

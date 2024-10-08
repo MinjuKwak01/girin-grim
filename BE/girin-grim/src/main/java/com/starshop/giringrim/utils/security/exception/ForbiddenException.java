@@ -1,13 +1,13 @@
 package com.starshop.giringrim.utils.security.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
+import com.starshop.giringrim.utils.exception.SecurityErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class ForbiddenException extends RuntimeException{
-    private final ErrorMessage errorMessage;
+    private final SecurityErrorMessage errorMessage;
 
-    public ForbiddenException(ErrorMessage errorMessage) {
+    public ForbiddenException(SecurityErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

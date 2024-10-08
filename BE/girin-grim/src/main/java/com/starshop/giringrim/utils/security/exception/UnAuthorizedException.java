@@ -1,13 +1,13 @@
 package com.starshop.giringrim.utils.security.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
+import com.starshop.giringrim.utils.exception.SecurityErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class UnAuthorizedException extends RuntimeException{
-    private final ErrorMessage errorMessage;
+    private final SecurityErrorMessage errorMessage;
 
-    public UnAuthorizedException(ErrorMessage errorMessage) {
+    public UnAuthorizedException(SecurityErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }
