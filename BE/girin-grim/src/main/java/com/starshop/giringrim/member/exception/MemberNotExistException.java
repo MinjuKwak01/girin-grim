@@ -1,13 +1,12 @@
 package com.starshop.giringrim.member.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class MemberNotExistException extends RuntimeException {
-    private final ErrorMessage errorMessage;
+    private final MemberErrorMessage errorMessage;
 
-    public MemberNotExistException(ErrorMessage errorMessage) {
+    public MemberNotExistException(MemberErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

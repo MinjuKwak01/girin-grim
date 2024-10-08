@@ -1,14 +1,13 @@
 package com.starshop.giringrim.member.exception;
 
-import com.starshop.giringrim.utils.exception.ErrorMessage;
 import lombok.Getter;
 
 @Getter
 public class UniversitySelectionException extends RuntimeException{
 
-    private final ErrorMessage errorMessage;
+    private final MemberErrorMessage errorMessage;
 
-    public UniversitySelectionException(ErrorMessage errorMessage) {
+    public UniversitySelectionException(MemberErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 }

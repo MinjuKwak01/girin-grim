@@ -2,9 +2,11 @@ package com.starshop.giringrim.payment.service;
 
 import com.starshop.giringrim.funding.entity.Funding;
 import com.starshop.giringrim.funding.entity.FundingType;
+import com.starshop.giringrim.funding.exception.FundingErrorMessage;
 import com.starshop.giringrim.funding.exception.FundingNotExistException;
 import com.starshop.giringrim.funding.repository.FundingRepository;
 import com.starshop.giringrim.member.entity.Member;
+import com.starshop.giringrim.member.exception.MemberErrorMessage;
 import com.starshop.giringrim.member.exception.MemberNotExistException;
 import com.starshop.giringrim.member.repository.MemberRepository;
 import com.starshop.giringrim.option.Option;
@@ -18,8 +20,6 @@ import com.starshop.giringrim.payment.dto.PaymentReqDtos;
 import com.starshop.giringrim.payment.dto.PaymentRespDtos;
 import com.starshop.giringrim.payment.entity.Payment;
 import com.starshop.giringrim.payment.exception.*;
-import com.starshop.giringrim.utils.exception.ErrorMessage;
-import com.starshop.giringrim.utils.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,23 +49,23 @@ public class PaymentServiceImpl implements PaymentService{
     public PaymentRespDtos.PaymentDetailsDto getPaymentDetails(Long fundingId, Member loginMember) {
         //서포터 정보
         Member supporter = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
         //펀딩이 진행중이 아니라면 예외
         if(!funding.isProgress()){
-            throw new PaymentDurationException(ErrorMessage.PAYMENT_DURATION_UNAVAILABLE);
+            throw new PaymentDurationException(PaymentErrorMessage.PAYMENT_DURATION_UNAVAILABLE);
         }
         //크리에이터의 닉네임
         Member creator = funding.getMember();
 
         //크리에이터는 본인의 펀딩에 후원할 수 없으므로 userDetails의 멤버와 펀딩 작성자의 멤버 정보가 같으면 예외
         if(supporter.getId().equals(creator.getId())){
-            throw new PaymentUnavailableException(ErrorMessage.PAYMENT_UNAVAILABLE);
+            throw new PaymentUnavailableException(PaymentErrorMessage.PAYMENT_UNAVAILABLE);
         }
         return new PaymentRespDtos.PaymentDetailsDto(creator, supporter, funding);
     }
@@ -74,7 +74,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Transactional
     public void chargeCoins(PaymentReqDtos.ChargeDto reqDto, Member loginMember) {
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
         BigDecimal myCoin = member.getCoin().add(reqDto.getCoin());
 
@@ -85,7 +85,7 @@ public class PaymentServiceImpl implements PaymentService{
     @Transactional(readOnly = true)
     public PaymentRespDtos.ChargeDetailsDto getChargeDetails(Member loginMember) {
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
         return new PaymentRespDtos.ChargeDetailsDto(member);
     }
@@ -97,16 +97,16 @@ public class PaymentServiceImpl implements PaymentService{
 
         //로그인 사용자 정보 얻어오기
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //후원자 아이디와 로그인 사용자 아이디가 다를 경우
         if(!Objects.equals(reqDto.getMemberId(), member.getId())){
-            throw new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST);
+            throw new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST);
         }
 
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
         //크리에이터의 닉네임
@@ -114,11 +114,11 @@ public class PaymentServiceImpl implements PaymentService{
 
         //크리에이터는 본인의 펀딩에 후원할 수 없으므로 userDetails의 멤버와 펀딩 작성자의 멤버 정보가 같으면 예외
         if(member.getId().equals(creator.getId())){
-            throw new PaymentUnavailableException(ErrorMessage.PAYMENT_UNAVAILABLE);
+            throw new PaymentUnavailableException(PaymentErrorMessage.PAYMENT_UNAVAILABLE);
         }
 
         if(paymentRepository.findByMemberIdFundingId(member.getId(), funding.getId()).isPresent()){
-            throw new PaymentAlreadyDoneException(ErrorMessage.PAYMENT_ALREADY_DONE);
+            throw new PaymentAlreadyDoneException(PaymentErrorMessage.PAYMENT_ALREADY_DONE);
         }
 
         //결제 객체 만들기
@@ -138,12 +138,12 @@ public class PaymentServiceImpl implements PaymentService{
 
                 //옵션 아이디로 객체 가져오기
                 Option option = optionRepository.findById(optionId).orElseThrow(
-                        () -> new PaymentOptionNotExistException(ErrorMessage.PAYMENT_OPTION_NOT_EXIST)
+                        () -> new PaymentOptionNotExistException(PaymentErrorMessage.PAYMENT_OPTION_NOT_EXIST)
                 );
 
                 //수량 부족 예외
                 if (quantity > option.getQuantity() && option.getQuantity() != -1) {
-                    throw new QuantityNotEnoughException(ErrorMessage.QUANTITY_NOT_ENOUGH);
+                    throw new QuantityNotEnoughException(PaymentErrorMessage.QUANTITY_NOT_ENOUGH);
                 }
                 //수량이 -1이면 무한대이므로 수량 감소 x , 아닐 경우 수량 감소
                 if (option.getQuantity() != -1) {
@@ -171,7 +171,7 @@ public class PaymentServiceImpl implements PaymentService{
 
             //보유 금액 < 결제 금액 이면 예외
             if(member.getCoin().compareTo(totalCoin) < 0){
-                throw new CoinNotEnoughException(ErrorMessage.COIN_NOT_ENOUGH);
+                throw new CoinNotEnoughException(PaymentErrorMessage.COIN_NOT_ENOUGH);
             }
             //멤버의 코인 차감, 주소 업데이트
             member.fundingPayment(totalCoin);
@@ -193,14 +193,14 @@ public class PaymentServiceImpl implements PaymentService{
 
             //보유 금액 < 결제 금액 이면 예외
             if(member.getCoin().compareTo(reqDto.getPrice()) < 0){
-                throw new CoinNotEnoughException(ErrorMessage.COIN_NOT_ENOUGH);
+                throw new CoinNotEnoughException(PaymentErrorMessage.COIN_NOT_ENOUGH);
             }
             //멤버의 코인 차감, 주소 업데이트
             member.fundingPayment(reqDto.getPrice());
             member.updateAddress(reqDto.getAddress());
 
         }else{
-            throw new PaymentTypeNotExistException(ErrorMessage.PAYMENT_TYPE_NOT_EXIST);
+            throw new PaymentTypeNotExistException(PaymentErrorMessage.PAYMENT_TYPE_NOT_EXIST);
         }
 
     }
@@ -211,22 +211,22 @@ public class PaymentServiceImpl implements PaymentService{
 
         //로그인 사용자 정보 얻어오기
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         Funding funding = fundingRepository.findById(fundingId).orElseThrow(
-                () -> new FundingNotExistException(ErrorMessage.FUNDING_NOT_EXIST)
+                () -> new FundingNotExistException(FundingErrorMessage.FUNDING_NOT_EXIST)
         );
 
         Member creator = funding.getMember();
 
         //본인의 후원 내역만 조회 가능
         if(!memberId.equals(member.getId())){
-            throw new HistoryForbiddenException(ErrorMessage.HISTORY_FORBIDDEN);
+            throw new HistoryForbiddenException(PaymentErrorMessage.HISTORY_FORBIDDEN);
         }
 
         Payment payment = paymentRepository.findByMemberIdFundingId(memberId, fundingId).orElseThrow(
-                () -> new HistoryNotExistException(ErrorMessage.HISTORY_NOT_EXIST)
+                () -> new HistoryNotExistException(PaymentErrorMessage.HISTORY_NOT_EXIST)
         );
 
         List<PaymentDetails> paymentDetails = paymentDetailsRepository.findByPamentId(payment.getId());
@@ -261,12 +261,12 @@ public class PaymentServiceImpl implements PaymentService{
 
         //존재하지 않는 멤버 예외
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         //본인의 후원 내역만 조회 가능
         if(!memberId.equals(member.getId())) {
-            throw new HistoryForbiddenException(ErrorMessage.HISTORY_FORBIDDEN);
+            throw new HistoryForbiddenException(PaymentErrorMessage.HISTORY_FORBIDDEN);
         }
 
         List<Payment> paymentList = paymentRepository.findByMemberId(memberId);
@@ -308,7 +308,7 @@ public class PaymentServiceImpl implements PaymentService{
     public PaymentRespDtos.CreationListDto fundingCreationList(Long memberId){
         //조회하고자하는 사람의 아이디로 멤버 조회
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotExistException(ErrorMessage.MEMBER_NOT_EXIST)
+                () -> new MemberNotExistException(MemberErrorMessage.MEMBER_NOT_EXIST)
         );
 
         List<Funding> fundingList = fundingRepository.findFundingsByMemberId(member.getId());
